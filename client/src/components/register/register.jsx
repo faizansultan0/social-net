@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Row, Col, Form, Modal, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Modal, Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -11,13 +11,15 @@ const Register = () => {
     const [secret, setSecret] = useState('');
     const [password, setPassword] = useState('');
     const [ok, setOk] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleModal = () => setOk(false);
 
     const submitHandler = e => {
         e.preventDefault();
         // console.log(`NAME: ${name}, EMAIL: ${email}, SECRET: ${secret}, PASSWORD: ${password}`);
-        axios.post('http://localhost:8080/api/register', {
+        setLoading(true);
+        axios.post(`${process.env.REACT_APP_API}/register`, {
             name, 
             email,
             secret,
@@ -26,15 +28,24 @@ const Register = () => {
         .then((res) => {
             // console.log(res.data.ok)
             setOk(res.data.ok);
+            setLoading(false);
+            setName('');
+            setEmail('');
+            setSecret('');
+            setPassword('');
             // toast('Congratulations! You are registerd');
         })
-        .catch(err => toast.error(err.response.data))
+        .catch(err => {
+            toast.error(err.response.data);
+            setLoading(false);
+        })
     }
 
     return (
         <div className="register">
             <Container fluid>
-                <h1 className='text-center py-5 bg-secondary text-light'>Register</h1>
+                <h1 className='default-bg text-center py-5 bg-secondary'>Register</h1>
+
 
                 <Row className='py-5 m-0'>
                     <Col md={ {span: 6, offset: 3} }>
@@ -73,7 +84,14 @@ const Register = () => {
                         {/* <Form.Group className="mb-3">
                             <Form.Check type="checkbox" label="Check me out" />
                         </Form.Group> */}
-                        <button className="btn btn-primary w-100">Submit</button>
+                        <button disabled={!name || !email || !secret || !password } className="btn btn-primary w-100">
+                            { loading ?     
+                                <Spinner animation="border" role="status" size='sm'>
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner> : 
+                                'Submit'
+                            }
+                        </button>
                     </Form>
                     </Col>
                 </Row>

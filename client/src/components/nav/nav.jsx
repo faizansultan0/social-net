@@ -13,7 +13,7 @@ const NavBar = () => {
                     className='d-flex justify-content-between'
                     >
                         <Nav.Item >
-                            <NavLink className='nav-link' to="/">Home</NavLink>
+                            <NavLink className='nav-link logo' to="/" style={{textShadow:'1px 1px 2px grey'}}>SN</NavLink>
                         </Nav.Item>
                         <Nav.Item >
                             <NavLink className='nav-link' to="/login">Login</NavLink>
