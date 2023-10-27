@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from '../../context';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Modal, Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -13,7 +15,14 @@ const Register = () => {
     const [ok, setOk] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleModal = () => setOk(false);
+    const [ state ] = useContext(UserContext);
+
+    const navigate = useNavigate();
+    
+    // Redirecting User to Home Page if LogedIn
+    if(state && state.token) {
+        navigate('/');
+    }
 
     const submitHandler = e => {
         e.preventDefault();
@@ -44,7 +53,7 @@ const Register = () => {
     return (
         <div className="register">
             <Container fluid>
-                <h1 className='default-bg text-center py-5 bg-secondary'>Register</h1>
+                <h1 className='default-bg text-center py-5 bg-secondary'>User Registeration</h1>
 
 
                 <Row className='py-5 m-0'>
@@ -84,7 +93,7 @@ const Register = () => {
                         {/* <Form.Group className="mb-3">
                             <Form.Check type="checkbox" label="Check me out" />
                         </Form.Group> */}
-                        <button disabled={!name || !email || !secret || !password } className="btn btn-primary w-100">
+                        <button disabled={!name || !email || !secret || !password } className="btn btn-primary w-100 mb-3">
                             { loading ?     
                                 <Spinner animation="border" role="status" size='sm'>
                                     <span className="visually-hidden">Loading...</span>
@@ -92,17 +101,19 @@ const Register = () => {
                                 'Submit'
                             }
                         </button>
+
+                        <p className="para text-center">Already Registered? <Link to='/login'>Login</Link></p>
                     </Form>
                     </Col>
                 </Row>
 
-                <Modal show={ok} onHide={handleModal} animation={false}>
+                <Modal show={ok} onHide={() => setOk(false)} animation={false}>
                     <Modal.Header closeButton>
                     <Modal.Title>Congratulations!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>You are registered succesfully</Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModal}>
+                    <Button variant="secondary" onClick={() => setOk(false)}>
                         Close
                     </Button>
                     <Link className="btn btn-primary" to='/login' >

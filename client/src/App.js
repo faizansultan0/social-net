@@ -1,3 +1,4 @@
+import {UserProvider} from './context';
 import NavBar from './components/nav/nav';
 import PageRoutes from './routes';
 import { ToastContainer } from 'react-toastify';
@@ -6,11 +7,11 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <UserProvider>
       <NavBar />
       <PageRoutes />
       <ToastContainer position='top-center' />
-    </div>
+    </UserProvider>
   );
 }
 
