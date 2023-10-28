@@ -25,7 +25,7 @@ const Login = () => {
         e.preventDefault();
         // console.log(`NAME: ${name}, EMAIL: ${email}, SECRET: ${secret}, PASSWORD: ${password}`);
         setLoading(true);
-        axios.post(`${process.env.REACT_APP_API}/login`, {
+        axios.post(`/login`, {
             email,
             password,
         })

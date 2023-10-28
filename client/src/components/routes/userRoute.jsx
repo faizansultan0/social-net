@@ -15,11 +15,8 @@ const UserRoute = ({children}) => {
 
     const getCurrentUser = async () => {
         try {
-            const {data} = await axios.get(`${process.env.REACT_APP_API}/current-user`, {
-                headers: {
-                    "Authorization": `Bearer ${state.token}` 
-                }
-            });
+            const {data} = await axios.get(`/current-user`
+            );
             if(data.ok) setOK(true);
         } catch (err) {
             navigate('/login');
