@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { UserContext } from '../../context';
 import { Container, Row, Col, Form, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -21,33 +21,55 @@ const Login = () => {
     }
 
 
-    const submitHandler = e => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         // console.log(`NAME: ${name}, EMAIL: ${email}, SECRET: ${secret}, PASSWORD: ${password}`);
-        setLoading(true);
-        axios.post(`/login`, {
-            email,
-            password,
-        })
-        .then((res) => {
-            console.log(res.data);
-            // Save Data in context
-            setState(res.data);
+        try {
+            setLoading(true);
+            let {data} = await axios.post(`/login`, {
+                email,
+                password,
+            })
 
-            // Save in Local Storage
-            window.localStorage.setItem('auth', JSON.stringify(res.data))
-
-            // console.log(res.data.ok)
-            navigate('/');
-            setLoading(false);
-            setEmail('');
-            setPassword('');
-            // toast('Congratulations! You are registerd');
-        })
-        .catch(err => {
-            toast.error(err.response.data);
-            setLoading(false);
-        })
+            if(data.error) {
+                toast.error(data.error);
+                setLoading(false);
+            } else {
+                // console.log(data);
+                // Save Data in context
+                setState(data);
+    
+                // Save in Local Storage
+                window.localStorage.setItem('auth', JSON.stringify(data))
+    
+                // console.log(res.data.ok)
+                navigate('/');
+                setLoading(false);
+                setEmail('');
+                setPassword('');                
+            }
+            // .then((res) => {
+            //     console.log(res.data);
+            //     // Save Data in context
+            //     setState(res.data);
+    
+            //     // Save in Local Storage
+            //     window.localStorage.setItem('auth', JSON.stringify(res.data))
+    
+            //     // console.log(res.data.ok)
+            //     navigate('/');
+            //     setLoading(false);
+            //     setEmail('');
+            //     setPassword('');
+            //     // toast('Congratulations! You are registerd');
+            // })
+            // .catch(err => {
+            //     toast.error(err.response.data);
+            //     setLoading(false);
+            // })
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -71,7 +93,7 @@ const Login = () => {
                             <Form.Label className='text-muted'>Password</Form.Label>
                             <Form.Control value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password" />
                         </Form.Group>
-                        <button disabled={!email || !password } className="btn btn-primary w-100 mb-3">
+                        <button disabled={!email || !password || loading } className="btn btn-primary w-100 mb-3">
                             { loading ?     
                                 <Spinner animation="border" role="status" size='sm'>
                                     <span className="visually-hidden">Loading...</span>
@@ -81,6 +103,7 @@ const Login = () => {
                         </button>
 
                         <p className="para text-center">Not Registered? <Link to='/register'>Register</Link></p>
+                        <div className="para text-center"><Link to='/forgot-password' className='text-danger text-decoration-none' >Forgot Password</Link></div>
                     </Form>
                     </Col>
                 </Row>

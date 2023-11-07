@@ -1,19 +1,15 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import {UserContext} from '../../context';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 
 const UserRoute = ({children}) => {
-    const [state, setState] = useContext(UserContext);
+    const [state] = useContext(UserContext);
     const [ok, setOK] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if(state && state.token) getCurrentUser();
-    }, [state && state.token])
-
-    const getCurrentUser = async () => {
+    const getCurrentUser = useCallback(async () => {
         try {
             const {data} = await axios.get(`/current-user`
             );
@@ -21,11 +17,19 @@ const UserRoute = ({children}) => {
         } catch (err) {
             navigate('/login');
         }
-    }
+    }, []) 
+
+    useEffect(() => {
+        if(state && state.token) {
+            getCurrentUser();
+        }
+    }, [state])
+
+
 
     state === null && setTimeout(()=>{
         navigate('/login');
-    }, 1000)
+    }, 500)
 
     return !ok? (
         <div className="d-flex justify-content-center align-items-center vh-100">

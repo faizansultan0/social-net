@@ -1,8 +1,8 @@
 const { expressjwt: jwt } = require('express-jwt');
 
-const RequireSignIn = jwt({
+const requireSignIn = jwt({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256']
 })
 
-module.exports = { RequireSignIn };
+module.exports = { requireSignIn };

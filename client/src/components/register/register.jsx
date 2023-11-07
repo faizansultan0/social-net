@@ -24,30 +24,45 @@ const Register = () => {
         navigate('/');
     }
 
-    const submitHandler = e => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         // console.log(`NAME: ${name}, EMAIL: ${email}, SECRET: ${secret}, PASSWORD: ${password}`);
-        setLoading(true);
-        axios.post(`/register`, {
-            name, 
-            email,
-            secret,
-            password,
-        })
-        .then((res) => {
-            // console.log(res.data.ok)
-            setOk(res.data.ok);
-            setLoading(false);
-            setName('');
-            setEmail('');
-            setSecret('');
-            setPassword('');
-            // toast('Congratulations! You are registerd');
-        })
-        .catch(err => {
-            toast.error(err.response.data);
-            setLoading(false);
-        })
+        try {
+            setLoading(true);
+            let {data} = await axios.post(`/register`, {
+                name, 
+                email,
+                secret,
+                password,
+            })
+
+            if(data.error) {
+                toast.error(data.err)
+            } else {
+                setOk(true);
+                setLoading(false);
+                setName('');
+                setEmail('');
+                setSecret('');
+                setPassword('');
+            }
+            // .then((res) => {
+            //     // console.log(res.data.ok)
+            //     setOk(res.data.ok);
+            //     setLoading(false);
+            //     setName('');
+            //     setEmail('');
+            //     setSecret('');
+            //     setPassword('');
+            //     // toast('Congratulations! You are registerd');
+            // })
+            // .catch(err => {
+            //     toast.error(err.response.data);
+            //     setLoading(false);
+            // })
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -93,7 +108,7 @@ const Register = () => {
                         {/* <Form.Group className="mb-3">
                             <Form.Check type="checkbox" label="Check me out" />
                         </Form.Group> */}
-                        <button disabled={!name || !email || !secret || !password } className="btn btn-primary w-100 mb-3">
+                        <button disabled={!name || !email || !secret || !password || loading } className="btn btn-primary w-100 mb-3">
                             { loading ?     
                                 <Spinner animation="border" role="status" size='sm'>
                                     <span className="visually-hidden">Loading...</span>

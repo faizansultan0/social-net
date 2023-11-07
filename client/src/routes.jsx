@@ -4,6 +4,7 @@ import Register from './components/register/register';
 import Dashboard from './components/dashboard/dashboard';
 import PageNotFound from './components/pageNotFound/pageNotFound';
 import { Routes, Route } from 'react-router-dom';
+import ForgotPassword from './components/forgotPassword/forgotPassword';
 
 const PageRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const PageRoutes = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/user/dashboard' element={<Dashboard />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='*' element={<PageNotFound />} />
         </Routes>
     )
