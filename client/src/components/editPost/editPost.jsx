@@ -1,60 +1,59 @@
-import UserRoute from "../routes/userRoute";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import PostForm from "../dashboard/postForm/postForm";
 import { Container, Row, Col } from "react-bootstrap";
-import PostForm from "./postForm/postForm";
-import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context";
-// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import UserRoute from "../routes/userRoute";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PostList from "./postList/postList";
 
-const Dashboard = () => {
-  // User Context
-  const [state] = useContext(UserContext);
+const EditPost = () => {
+  const params = useParams();
+  // console.log(params);
+  const _id = params._id;
+
+  const navigate = useNavigate();
 
   // Post Content States
   const [content, setContent] = useState("");
   const [image, setImage] = useState({});
   const [uploading, setUploading] = useState(false);
 
-  const [posts, setPosts] = useState([]);
-
-  // const navigate = useNavigate();
-  const fetchUserPosts = async () => {
+  useEffect(() => {
+    if(_id) getCurrentPost();
+  }, []);
+  
+  const getCurrentPost = async () => {
     try {
-      const { data } = await axios.get("/user-posts");
-      // console.log('User Posts => ', data);
-      setPosts(data);
-      // console.log("Posts: ", posts);
+      const { data } = await axios.get(`/user-post/${_id}`);
+      // console.log("Received Post Data: ", data);
+      setContent(data.content);
+      setImage(data.image);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    if (state && state.token) fetchUserPosts();
-  }, [state, state.token]);
-
+  // Submit Post Update
   const postSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Post: ", content);
-
     try {
-      const { data } = await axios.post("/create-post", { content, image });
-      // console.log('Create Post Res: ', data);
-      if (data.error) {
-        toast.error(data.error);
+      const { data } = await axios.put(`/update-post/${_id}`, {
+        content,
+        image,
+      });
+      if (data.err) {
+        toast.error(data.err);
       } else {
-        fetchUserPosts();
-        toast.success("Post Created Successfully!");
-        setContent("");
-        setImage({});
+        toast.success("Post updated successfully!");
+        navigate("/user/dashboard");
       }
     } catch (err) {
       console.log(err);
     }
   };
 
+  // If User Submit another Image
   const handleImage = async (e) => {
     const file = e.target.files[0];
     // console.log('File is: ', file);
@@ -81,11 +80,11 @@ const Dashboard = () => {
     <UserRoute>
       <Container fluid>
         <div className="py-4">
-          <h1 className="text-center">Newsfeed</h1>
+          <h1 className="text-center">Update Post</h1>
         </div>
 
         <Row className="py-3">
-          <Col md={8}>
+          <Col md={8} className="offset-md-2">
             <PostForm
               content={content}
               setContent={setContent}
@@ -94,11 +93,6 @@ const Dashboard = () => {
               uploading={uploading}
               image={image}
             />
-
-            <PostList posts={posts} state={state} />
-          </Col>
-          <Col md={4}>
-            <p>Sidebar</p>
           </Col>
         </Row>
       </Container>
@@ -106,4 +100,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default EditPost;

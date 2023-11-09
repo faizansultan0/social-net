@@ -3,9 +3,9 @@ import ReactQuill from "react-quill";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import "react-quill/dist/quill.snow.css";
-import './createPost.css';
+import './postForm.css';
 
-const CreatePostForm = ({
+const PostForm = ({
   content,
   setContent,
   postSubmit,
@@ -14,7 +14,7 @@ const CreatePostForm = ({
   image,
 }) => {
   return (
-    <Form className="mx-2" onSubmit={postSubmit}>
+    <Form onSubmit={postSubmit} className="mb-4">
       <div className="card">
         <div className="card-body">
           <Form.Group
@@ -60,4 +60,4 @@ const CreatePostForm = ({
   );
 };
 
-export default CreatePostForm;
+export default PostForm;

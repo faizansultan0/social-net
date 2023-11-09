@@ -1,0 +1,46 @@
+.user-post .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-post .left-part {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.post-avatar {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.user-post .card-header .name {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.user-post .card-header .date {
+    font-size: 12px;
+}
+
+.user-post .card-header .right-icon-btn {
+    color: grey;
+}
+
+.user-post .card-header .right-icon-btn:hover {
+    color: black;
+}
+
+.user-post .post-img {
+    max-height: 400px;
+    max-width: 100%;
+}
+
+.user-post .icon-div * {
+    margin: 0;
+}

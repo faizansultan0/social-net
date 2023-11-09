@@ -27,19 +27,56 @@ const createPost = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-    //   console.log("Req Files: ", req.files);
-    try {
-        const result = await cloudinary.v2.uploader.upload(req.files.image.path);
+  //   console.log("Req Files: ", req.files);
+  try {
+    const result = await cloudinary.v2.uploader.upload(req.files.image.path);
 
-        console.log('uploaded image url: ', result);
+    console.log("uploaded image url: ", result);
 
-        res.json({
-            url: result.secure_url,
-            public_id: result.public_id,
-        })
-    } catch (err) {
-        console.log(err);
-    }
+    res.json({
+      url: result.secure_url,
+      public_id: result.public_id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-module.exports = { createPost, uploadImage };
+const postsByUser = async (req, res) => {
+  try {
+    // const posts = await Post.find({ postedBy: req.auth._id })
+    const posts = await Post.find()
+      .populate("postedBy", "_id name image")
+      .sort({ createdAt: -1 });
+
+    // console.log(posts);
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getPost = async (req, res) => {
+  console.log("req id", req.params._id);
+  const _id = req.params._id;
+
+  try {
+    const post = await Post.findById(_id);
+
+    res.json(post);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const updatePost = async (req, res) => {
+  // console.log('Post Update Body: ', req.body)
+  try {
+    const post = await Post.findByIdAndUpdate(req.params._id, req.body, { new: true });
+    res.json(post);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+module.exports = { createPost, uploadImage, postsByUser, getPost, updatePost };
