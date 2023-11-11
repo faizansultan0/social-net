@@ -12,6 +12,10 @@ const userSchema = new Schema({
         trim: true,
         required: true,
     },
+    image: {
+        url: String,
+        publicId: String,
+    },
     password: {
         type: String,
         required: true,
@@ -26,7 +30,6 @@ const userSchema = new Schema({
         required: true,
     },
     about: {},
-    photo: String,
     following: [{
         type: Schema.ObjectId,
         ref: 'User',

@@ -1,0 +1,14 @@
+.profileUpdatePage .profile-img-div {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileUpdatePage .profile-img-div .profile-img {
+    max-width: 130%;
+    max-height: 150%;
+}
