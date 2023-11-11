@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 const jwt = require("jsonwebtoken");
+const { nanoid } = require("nanoid");
 
 const register = async (req, res) => {
   // console.log(req.body);
@@ -48,6 +49,7 @@ const register = async (req, res) => {
     email,
     password: hashedPassword,
     secret,
+    username: nanoid(6),
   });
 
   try {
