@@ -164,7 +164,7 @@ const forgotPassword = async (req, res) => {
 
 const profileUpdate = async (req, res) => {
   try {
-    console.log('REQ: ', req.body)
+    // console.log('REQ: ', req.body)
     const data = {};
 
     try {
