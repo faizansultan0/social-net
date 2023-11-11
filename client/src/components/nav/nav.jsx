@@ -57,7 +57,8 @@ const NavBar = () => {
             ) : (
               <>
                 <Dropdown>
-                  <Dropdown.Toggle
+                    <Dropdown.Toggle
+                      className="border-none"
                     variant="transparent text-light"
                     id="dropdown-basic"
                   >
