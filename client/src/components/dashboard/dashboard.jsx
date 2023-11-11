@@ -1,5 +1,5 @@
 import UserRoute from "../routes/userRoute";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import PostForm from "./postForm/postForm";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context";
@@ -18,18 +18,20 @@ const Dashboard = () => {
   const [uploading, setUploading] = useState(false);
 
   const [posts, setPosts] = useState([]);
+  const [postsLoading, setPostsLoading] = useState(false);
 
   // const navigate = useNavigate();
   const fetchUserPosts = async () => {
     try {
-      const { data } = await axios.get("/user-posts", {
-        cache: false,
-      });
+      setPostsLoading(true);
+      const { data } = await axios.get("/user-posts");
       // console.log('User Posts => ', data);
       setPosts(data);
+      setPostsLoading(false);
       // console.log("Posts: ", posts);
     } catch (err) {
       console.log(err);
+      setPostsLoading(false);
     }
   };
 
@@ -64,7 +66,7 @@ const Dashboard = () => {
     formData.append("image", file);
     // console.log('FormData is: ', [...formData]);
     setUploading(true);
-    
+
     try {
       const { data } = await axios.post("/upload-image", formData);
       // console.log('Uploaded Image: ', data);
@@ -83,9 +85,9 @@ const Dashboard = () => {
     try {
       const answer = window.confirm("Are you sure want to delete Post?");
       if (!answer) return;
-       await axios.delete(`/delete-post/${post._id}`);
+      await axios.delete(`/delete-post/${post._id}`);
       // console.log(data)
-      toast.error('Post Deleted');
+      toast.error("Post Deleted");
       fetchUserPosts();
     } catch (err) {
       console.log(err);
@@ -110,7 +112,15 @@ const Dashboard = () => {
               image={image}
             />
 
-            <PostList posts={posts} state={state} handleDelete={handleDelete} />
+            {postsLoading ? (
+              <Spinner />
+            ) : (
+              <PostList
+                posts={posts}
+                state={state}
+                handleDelete={handleDelete}
+              />
+            )}
           </Col>
           <Col md={4}>
             <p>Sidebar</p>

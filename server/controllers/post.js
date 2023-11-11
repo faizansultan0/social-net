@@ -47,7 +47,7 @@ const postsByUser = async (req, res) => {
     // const posts = await Post.find({ postedBy: req.auth._id })
     const posts = await Post.find()
       .populate("postedBy", "_id name image")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
 
     // console.log(posts);
     res.json(posts);

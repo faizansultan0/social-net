@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Nav, Container } from "react-bootstrap";
+import { Nav, Container, Dropdown } from "react-bootstrap";
 import { useContext } from "react";
 import { UserContext } from "../../context";
-import './nav.css';
+import "./nav.css";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -40,6 +40,7 @@ const NavBar = () => {
                 SN
               </NavLink>
             </Nav.Item>
+
             {!state ? (
               <>
                 <Nav.Item>
@@ -54,18 +55,28 @@ const NavBar = () => {
                 </Nav.Item>
               </>
             ) : (
-                <>
-                <Nav.Item>
-                  <NavLink className="nav-link" to="/user/dashboard">
+              <>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="transparent text-light"
+                    id="dropdown-basic"
+                  >
                     {state.user && state.user.name}
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                    <button className="nav-link" onClick={logout}>
-                        Logout
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <NavLink
+                      className="text-decoration-none dropdown-item"
+                      to="/user/dashboard"
+                    >
+                      Dashboard
+                    </NavLink>
+                    <button className="dropdown-item border-0 py-0" onClick={logout}>
+                      Logout
                     </button>
-                </Nav.Item>
-                </>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </>
             )}
           </Nav>
         </div>
