@@ -10,32 +10,32 @@ const register = async (req, res) => {
   // Validations
   if (!name) {
     return res.json({
-        error: 'Name is required'
-    })
-  };
+      error: "Name is required",
+    });
+  }
   if (!secret) {
     return res.json({
-        error: 'Answer is required'
-    })
-    }
+      error: "Answer is required",
+    });
+  }
   if (!password || password.length < 6) {
     return res.json({
-        error: 'Password is required and should be atleast 6 characters long'
-    })
+      error: "Password is required and should be atleast 6 characters long",
+    });
   }
 
   if (!email) {
     return res.json({
-        error: 'Email is Required'
-    })
-  };
+      error: "Email is Required",
+    });
+  }
 
   try {
     const exist = await User.findOne({ email });
     if (exist) {
-        res.json({
-            error: 'Email is taken'
-        })
+      return res.json({
+        error: "Email is taken",
+      });
     }
   } catch (err) {
     console.log("ERROR while checking for existing user: ", err);
@@ -54,7 +54,7 @@ const register = async (req, res) => {
 
   try {
     await user.save();
-    return res.status(200).json({
+    return res.json({
       ok: true,
     });
   } catch (err) {
@@ -72,17 +72,17 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.json({
-        error: "No User found with the given Email Address!"
-        });
+        error: "No User found with the given Email Address!",
+      });
     }
 
     // Password Check
     const match = await comparePassword(password, user.password);
     if (!match) {
-        return res.json({
-          error: "Wrong Password!"
-          });
-      };
+      return res.json({
+        error: "Wrong Password!",
+      });
+    }
 
     // If all ok, generate token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -98,13 +98,13 @@ const login = async (req, res) => {
   } catch (err) {
     console.log("Login req data reading error: ", err);
     res.json({
-        error: "Error! Try Again"
+      error: "Error! Try Again",
     });
   }
 };
 
 const currentUser = async (req, res) => {
-//   console.log(req.auth);
+  //   console.log(req.auth);
 
   try {
     let u = req.auth;
@@ -118,48 +118,107 @@ const currentUser = async (req, res) => {
 };
 
 const forgotPassword = async (req, res) => {
-    // console.log(req.body);
-    const { email, secret, newPassword } = req.body;
-    
-    if(!email) {
-        return res.json({
-            error: 'Email is required'
-        })
-    }
+  // console.log(req.body);
+  const { email, secret, newPassword } = req.body;
 
-    if(!secret) {
-        return res.json({
-            error: 'Secret is required'
-        })
-    }
+  if (!email) {
+    return res.json({
+      error: "Email is required",
+    });
+  }
 
-    if(!newPassword || newPassword < 6) {
-        return res.json({
-            error: 'New Password is required and should be atleast 6 characters long'
-        })
-    }
+  if (!secret) {
+    return res.json({
+      error: "Secret is required",
+    });
+  }
 
-    const user = await User.findOne({email, secret});
+  if (!newPassword || newPassword < 6) {
+    return res.json({
+      error: "New Password is required and should be atleast 6 characters long",
+    });
+  }
 
-    if(!user) {
-        return res.json({
-            error: `We can't verify you with given details`
-        })
-    }
+  const user = await User.findOne({ email, secret });
 
-    try {
-        const hashed = await hashPassword(newPassword);
-        await User.findByIdAndUpdate(user._id, {password: hashed})
+  if (!user) {
+    return res.json({
+      error: `We can't verify you with given details`,
+    });
+  }
 
-        return res.json({
-            success: 'Congrats! Now you can login with your new password'
-        })
-    } catch(err) {
-        console.log(err);
-        return res.json({
-            error: 'Something went wrong. Try again'
-        })
-    }
+  try {
+    const hashed = await hashPassword(newPassword);
+    await User.findByIdAndUpdate(user._id, { password: hashed });
+
+    return res.json({
+      success: "Congrats! Now you can login with your new password",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      error: "Something went wrong. Try again",
+    });
+  }
 };
 
-module.exports = { register, login, currentUser, forgotPassword };
+const profileUpdate = async (req, res) => {
+  try {
+    console.log('REQ: ', req.body)
+    const data = {};
+
+    try {
+      const exist = await User.findOne({ username: req.body.username })
+      if (exist && exist._id != req.auth._id) {
+        return res.json({
+          err: 'Username already Taken',
+        })
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    if (req.body.username) {
+      data.username = req.body.username;
+    }
+    if (req.body.about) {
+      data.about = req.body.about;
+    }
+    if (req.body.name) {
+      data.name = req.body.name;
+    }
+    if (req.body.password) {
+      if (req.body.password.length < 6) {
+        return res.json({
+          err: "Password is Required and should be minimum 6 characters long",
+        });
+      }
+      data.password = await hashPassword(req.body.password);
+    }
+
+    if (req.body.secret) {
+      data.secret = req.body.secret;
+    }
+
+    let user = await User.findByIdAndUpdate(req.auth._id, data, { new: true });
+
+    user.password = undefined;
+    user.secret = undefined;
+
+    res.json(user);
+
+  } catch (err) {
+    if (err.code == 11000) {
+      return res.json({
+        err: "Username already exists",
+      });
+    }
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  currentUser,
+  forgotPassword,
+  profileUpdate,
+};

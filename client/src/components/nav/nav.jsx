@@ -33,7 +33,7 @@ const NavBar = () => {
           >
             <Nav.Item>
               <NavLink
-                className="nav-link logo"
+                className="nav-link logo text-light"
                 to="/"
                 style={{ textShadow: "1px 1px 2px grey" }}
               >
@@ -44,12 +44,12 @@ const NavBar = () => {
             {!state ? (
               <>
                 <Nav.Item>
-                  <NavLink className="nav-link" to="/login">
+                  <NavLink className="nav-link text-light" to="/login">
                     Login
                   </NavLink>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLink className="nav-link" to="/register">
+                  <NavLink className="nav-link text-light" to="/register">
                     Register
                   </NavLink>
                 </Nav.Item>
@@ -57,8 +57,8 @@ const NavBar = () => {
             ) : (
               <>
                 <Dropdown>
-                    <Dropdown.Toggle
-                      className="border-none"
+                  <Dropdown.Toggle
+                    className="border-none"
                     variant="transparent text-light"
                     id="dropdown-basic"
                   >
@@ -72,7 +72,16 @@ const NavBar = () => {
                     >
                       Dashboard
                     </NavLink>
-                    <button className="dropdown-item border-0 py-0" onClick={logout}>
+                    <NavLink
+                      className="text-decoration-none dropdown-item"
+                      to="/user/profile/update"
+                    >
+                      Profile
+                    </NavLink>
+                    <button
+                      className="dropdown-item border-0 py-0"
+                      onClick={logout}
+                    >
                       Logout
                     </button>
                   </Dropdown.Menu>
