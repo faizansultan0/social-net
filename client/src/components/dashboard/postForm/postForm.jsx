@@ -33,7 +33,7 @@ const PostForm = ({
         </div>
 
         <div className="card-footer d-flex justify-content-between text-muted">
-          <button disabled={!content} className="btn btn-sm btn-primary mt-1">
+          <button disabled={uploading || (!content && Object.keys(image).length === 0)} className="btn btn-sm btn-primary mt-1">
             Post
           </button>
           <label>
@@ -48,7 +48,6 @@ const PostForm = ({
               <FontAwesomeIcon icon={faCamera} className="mt-2" />
             )}
             <input
-              disabled={uploading}
               onChange={handleImage}
               type="file"
               accept="images/*"
