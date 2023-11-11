@@ -20,19 +20,19 @@ const EditPost = () => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    const getCurrentPost = async () => {
+      try {
+        const { data } = await axios.get(`/user-post/${_id}`);
+        // console.log("Received Post Data: ", data);
+        setContent(data.content);
+        setImage(data.image);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     if(_id) getCurrentPost();
-  }, []);
+  }, [_id]);
   
-  const getCurrentPost = async () => {
-    try {
-      const { data } = await axios.get(`/user-post/${_id}`);
-      // console.log("Received Post Data: ", data);
-      setContent(data.content);
-      setImage(data.image);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   // Submit Post Update
   const postSubmit = async (e) => {

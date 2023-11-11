@@ -9,23 +9,23 @@ const UserRoute = ({ children }) => {
   const [ok, setOK] = useState(false);
   const navigate = useNavigate();
 
-  const getCurrentUser = async () => {
-    try {
-      const { data } = await axios.get(`/current-user`);
-      if (data.ok) {
-        setOK(true);
-      }
-    } catch (err) {
-      navigate("/login");
-      console.log(err);
-    }
-  };
-
+  
   useEffect(() => {
+    const getCurrentUser = async () => {
+      try {
+        const { data } = await axios.get(`/current-user`);
+        if (data.ok) {
+          setOK(true);
+        }
+      } catch (err) {
+        navigate("/login");
+        console.log(err);
+      }
+    };
     if (state && state.token) {
       getCurrentUser();
     }
-  }, [state, state.token]);
+  }, [state, state.token, navigate]);
 
   state === null &&
     setTimeout(() => {

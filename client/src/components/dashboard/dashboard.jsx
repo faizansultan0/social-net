@@ -22,7 +22,9 @@ const Dashboard = () => {
   // const navigate = useNavigate();
   const fetchUserPosts = async () => {
     try {
-      const { data } = await axios.get("/user-posts");
+      const { data } = await axios.get("/user-posts", {
+        cache: false,
+      });
       // console.log('User Posts => ', data);
       setPosts(data);
       // console.log("Posts: ", posts);
@@ -45,7 +47,7 @@ const Dashboard = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        fetchUserPosts();
+        await fetchUserPosts();
         toast.success("Post Created Successfully!");
         setContent("");
         setImage({});
@@ -62,18 +64,31 @@ const Dashboard = () => {
     formData.append("image", file);
     // console.log('FormData is: ', [...formData]);
     setUploading(true);
-
+    
     try {
       const { data } = await axios.post("/upload-image", formData);
       // console.log('Uploaded Image: ', data);
       setImage({
         url: data.url,
-        public_id: data.public_id,
+        publicId: data.public_id,
       });
       setUploading(false);
     } catch (err) {
       console.log(err);
       setUploading(false);
+    }
+  };
+
+  const handleDelete = async (post) => {
+    try {
+      const answer = window.confirm("Are you sure want to delete Post?");
+      if (!answer) return;
+       await axios.delete(`/delete-post/${post._id}`);
+      // console.log(data)
+      toast.error('Post Deleted');
+      fetchUserPosts();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -95,7 +110,7 @@ const Dashboard = () => {
               image={image}
             />
 
-            <PostList posts={posts} state={state} />
+            <PostList posts={posts} state={state} handleDelete={handleDelete} />
           </Col>
           <Col md={4}>
             <p>Sidebar</p>

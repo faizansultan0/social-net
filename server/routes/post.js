@@ -5,6 +5,7 @@ const {
   postsByUser,
   getPost,
   updatePost,
+  deletePost,
 } = require("../controllers/post");
 const router = express.Router();
 
@@ -27,5 +28,8 @@ router.get('/user-posts', requireSignIn, postsByUser);
 // Edit Post
 router.get('/user-post/:_id', requireSignIn, getPost)
 router.put('/update-post/:_id', requireSignIn, canEditDeletePost, updatePost)
+
+// Delete Post
+router.delete('/delete-post/:_id', requireSignIn, canEditDeletePost, deletePost)
 
 module.exports = router;

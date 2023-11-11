@@ -48,6 +48,7 @@ const PostForm = ({
               <FontAwesomeIcon icon={faCamera} className="mt-2" />
             )}
             <input
+              disabled={uploading}
               onChange={handleImage}
               type="file"
               accept="images/*"

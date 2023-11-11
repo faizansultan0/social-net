@@ -13,9 +13,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./postList.css";
 
-const PostList = ({ posts, state }) => {
-    // console.log(`Received Posts: `, posts);
-    // console.log('State Received for the List is:=> ', state)
+const PostList = ({ posts, state, handleDelete }) => {
+  // console.log(`Received Posts: `, posts);
+  // console.log('State Received for the List is:=> ', state)
   return (
     <div>
       {posts &&
@@ -35,10 +35,16 @@ const PostList = ({ posts, state }) => {
               </div>
               {state && post.postedBy._id === state.user._id && (
                 <div className="right-part">
-                  <Link to={`/user/post/${post._id}`} className="right-icon-btn">
+                  <Link
+                    to={`/user/post/${post._id}`}
+                    className="right-icon-btn"
+                  >
                     <FontAwesomeIcon icon={faPencil} />
                   </Link>
-                  <button className="border-0 right-icon-btn">
+                  <button
+                    onClick={() => handleDelete(post)}
+                    className="border-0 right-icon-btn"
+                  >
                     <FontAwesomeIcon icon={faTrashCan} />
                   </button>
                 </div>
