@@ -219,10 +219,30 @@ const profileUpdate = async (req, res) => {
   }
 };
 
+const findPeople = async (req, res) => {
+  try {
+    const currentUser = await User.findById({ _id: req.auth._id });
+
+    let following = currentUser.following;
+
+    following.push(currentUser._id);
+
+    const people = await User.find({ _id: { $nin: following } }).select('-password -secret').limit(10);
+    
+    res.json(people);
+  } catch (err) {
+    console.log(err);
+    res.json({
+      error: err,
+    })
+  }
+}
+
 module.exports = {
   register,
   login,
   currentUser,
   forgotPassword,
   profileUpdate,
+  findPeople,
 };

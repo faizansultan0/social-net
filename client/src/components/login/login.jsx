@@ -43,7 +43,7 @@ const Login = () => {
                 window.localStorage.setItem('auth', JSON.stringify(data))
     
                 // console.log(res.data.ok)
-                navigate('/');
+                navigate('/user/dashboard');
                 setLoading(false);
                 setEmail('');
                 setPassword('');                

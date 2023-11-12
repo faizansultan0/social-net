@@ -1,12 +1,12 @@
 import UserRoute from "../routes/userRoute";
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Spinner, Card } from "react-bootstrap";
 import PostForm from "./postForm/postForm";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context";
-// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import PostList from "./postList/postList";
+import PeopleList from "./peopleList/peopleList";
 
 const Dashboard = () => {
   // User Context
@@ -17,14 +17,18 @@ const Dashboard = () => {
   const [image, setImage] = useState({});
   const [uploading, setUploading] = useState(false);
 
+  // Displaying Posts
   const [posts, setPosts] = useState([]);
   const [postsLoading, setPostsLoading] = useState(false);
 
-  // const navigate = useNavigate();
+  // Find People
+  const [people, setPeople] = useState([]);
+  const [peopleLoading, setPeopleLoading] = useState(false);
+
   const fetchUserPosts = async () => {
     try {
       setPostsLoading(true);
-      const { data } = await axios.get("/user-posts");
+      const { data } = await axios.get(`/user-posts`);
       // console.log('User Posts => ', data);
       setPosts(data);
       setPostsLoading(false);
@@ -36,7 +40,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (state && state.token) fetchUserPosts();
+    if (state && state.token) {
+      fetchUserPosts();
+      findPeople();
+    }
   }, [state, state.token]);
 
   const postSubmit = async (e) => {
@@ -94,6 +101,18 @@ const Dashboard = () => {
     }
   };
 
+  const findPeople = async () => {
+    try {
+      setPeopleLoading(true);
+      const { data } = await axios.get("/find-people");
+      setPeople(data);
+      setPeopleLoading(false);
+    } catch (err) {
+      console.log(err);
+      setPeopleLoading(false);
+    }
+  };
+
   return (
     <UserRoute>
       <Container fluid>
@@ -113,7 +132,9 @@ const Dashboard = () => {
             />
 
             {postsLoading ? (
-              <Spinner />
+              <div className="d-flex justify-content-center align-items-center">
+                <Spinner />
+              </div>
             ) : (
               <PostList
                 posts={posts}
@@ -123,7 +144,28 @@ const Dashboard = () => {
             )}
           </Col>
           <Col md={4}>
-            <p>Sidebar</p>
+            <Card className="p-2">
+              <h2 className="h5">About</h2>
+              <p className="text-small">
+                {state.user.about ? (
+                  state.user.about
+                ) : (
+                  <span className="text-muted">No About Information</span>
+                )}
+              </p>
+              <h2 className="h5">Username</h2>
+              <a href="#" className="text-small d-block mb-3">
+                {state.user.username}
+              </a>
+              <h2 className="h5">Find People</h2>
+              {peopleLoading ? (
+                <div className="d-flex justify-content-center align-items-center">
+                  <Spinner />
+                </div>
+              ) : (
+                <PeopleList people={people} />
+              )}
+            </Card>
           </Col>
         </Row>
       </Container>

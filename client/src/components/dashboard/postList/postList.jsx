@@ -3,7 +3,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import {
-//   faHeart as regularHeart,
+  //   faHeart as regularHeart,
   faComment,
   faTrashCan,
 } from "@fortawesome/free-regular-svg-icons";
@@ -23,8 +23,15 @@ const PostList = ({ posts, state, handleDelete }) => {
           <div key={post._id} className="card mb-5 user-post">
             <div className="card-header">
               <div className="left-part">
-                <div className="bg-dark text-light rounded-circle post-avatar">
-                  {post.postedBy.name[0]}
+                <div className="bg-dark text-light rounded-circle post-avatar sm-round-parent">
+                  {post.postedBy.image ? (
+                    <img
+                      className="sm-round-img"
+                      src={post.postedBy.image.url}
+                    />
+                  ) : (
+                    post.postedBy.name[0]
+                  )}
                 </div>
                 <div className="right-content">
                   <span className="name d-block">{post.postedBy.name}</span>

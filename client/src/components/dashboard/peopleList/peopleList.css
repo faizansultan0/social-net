@@ -1,0 +1,17 @@
+.people-list .people-card {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.people-list .people-card .left-part {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.people-list .people-card .right-part {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
