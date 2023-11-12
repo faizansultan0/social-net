@@ -1,7 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import "./peopleList.css";
 
-const PeopleList = ({ people }) => {
+const PeopleList = ({ people, handleFollow }) => {
   return (
     <ul className="p-0 people-list">
       {people.map((user) => (
@@ -23,7 +23,7 @@ const PeopleList = ({ people }) => {
             </div>
           </div>
           <div className="right-part">
-            <Button className="bg-transparent border-0 text-primary p-2">
+            <Button onClick={()=> handleFollow(user)} className="bg-transparent border-0 text-primary p-2">
               Follow
             </Button>
           </div>

@@ -168,11 +168,11 @@ const profileUpdate = async (req, res) => {
     const data = {};
 
     try {
-      const exist = await User.findOne({ username: req.body.username })
+      const exist = await User.findOne({ username: req.body.username });
       if (exist && exist._id != req.auth._id) {
         return res.json({
-          err: 'Username already Taken',
-        })
+          err: "Username already Taken",
+        });
       }
     } catch (err) {
       console.log(err);
@@ -209,7 +209,6 @@ const profileUpdate = async (req, res) => {
     user.secret = undefined;
 
     res.json(user);
-
   } catch (err) {
     if (err.code == 11000) {
       return res.json({
@@ -227,16 +226,45 @@ const findPeople = async (req, res) => {
 
     following.push(currentUser._id);
 
-    const people = await User.find({ _id: { $nin: following } }).select('-password -secret').limit(10);
-    
+    const people = await User.find({ _id: { $nin: following } })
+      .select("-password -secret")
+      .limit(10);
+
     res.json(people);
   } catch (err) {
     console.log(err);
     res.json({
       error: err,
-    })
+    });
   }
-}
+};
+
+const addFollower = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.body._id, {
+      $addToSet: {
+        followers: req.auth._id,
+      },
+    });
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const userFollow = async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.auth._id,
+    {
+      $addToSet: {
+        following: req.body._id,
+      },
+    },
+    { new: true }
+  ).select('-password -secret');
+
+  res.json(user)
+};
 
 module.exports = {
   register,
@@ -245,4 +273,6 @@ module.exports = {
   forgotPassword,
   profileUpdate,
   findPeople,
+  addFollower,
+  userFollow,
 };

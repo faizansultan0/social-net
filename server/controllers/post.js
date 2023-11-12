@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 const cloudinary = require("cloudinary");
 
 cloudinary.config({
@@ -47,7 +48,7 @@ const postsByUser = async (req, res) => {
     // const posts = await Post.find({ postedBy: req.auth._id })
     const posts = await Post.find()
       .populate("postedBy", "_id name image")
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 });
 
     // console.log(posts);
     res.json(posts);
@@ -72,28 +73,47 @@ const getPost = async (req, res) => {
 const updatePost = async (req, res) => {
   // console.log('Post Update Body: ', req.body)
   try {
-    const post = await Post.findByIdAndUpdate(req.params._id, req.body, { new: true });
+    const post = await Post.findByIdAndUpdate(req.params._id, req.body, {
+      new: true,
+    });
     res.json(post);
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 const deletePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params._id);
     // Remove the Image from cloudinary
     if (post.image && post.image.publicId) {
-      const image = await cloudinary.v2.uploader.destroy(post.image.publicId)
+      const image = await cloudinary.v2.uploader.destroy(post.image.publicId);
     }
 
     res.json({
       ok: true,
-    })
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+const newsFeed = async (req, res) => {
+  try {
+    const user = await User.findById(req.auth._id);
+    let following = user.following;
+    following.push(req.auth._id);
+
+    const posts = await Post.find({ postedBy: { $in: following } })
+      .populate("postedBy", "_id name image")
+      .sort({ createdAt: -1 })
+      .limit(10)
+
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports = {
   createPost,
@@ -102,4 +122,5 @@ module.exports = {
   getPost,
   updatePost,
   deletePost,
+  newsFeed,
 };

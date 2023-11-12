@@ -10,7 +10,7 @@ import PeopleList from "./peopleList/peopleList";
 
 const Dashboard = () => {
   // User Context
-  const [state] = useContext(UserContext);
+  const [state, setState] = useContext(UserContext);
 
   // Post Content States
   const [content, setContent] = useState("");
@@ -25,10 +25,17 @@ const Dashboard = () => {
   const [people, setPeople] = useState([]);
   const [peopleLoading, setPeopleLoading] = useState(false);
 
-  const fetchUserPosts = async () => {
+  useEffect(() => {
+    if (state && state.token) {
+      newsFeed();
+      findPeople();
+    }
+  }, [state, state.token]);
+
+  const newsFeed = async () => {
     try {
       setPostsLoading(true);
-      const { data } = await axios.get(`/user-posts`);
+      const { data } = await axios.get(`/news-feed`);
       // console.log('User Posts => ', data);
       setPosts(data);
       setPostsLoading(false);
@@ -38,13 +45,6 @@ const Dashboard = () => {
       setPostsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (state && state.token) {
-      fetchUserPosts();
-      findPeople();
-    }
-  }, [state, state.token]);
 
   const postSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ const Dashboard = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        await fetchUserPosts();
+        await newsFeed();
         toast.success("Post Created Successfully!");
         setContent("");
         setImage({});
@@ -95,7 +95,26 @@ const Dashboard = () => {
       await axios.delete(`/delete-post/${post._id}`);
       // console.log(data)
       toast.error("Post Deleted");
-      fetchUserPosts();
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleFollow = async (user) => {
+    // console.log('user to Follow: ', user);
+    try {
+      const { data } = await axios.put("/user-follow", { _id: user._id });
+      // console.log('Handle Follow Response: ', data)
+      let auth = JSON.parse(localStorage.getItem('auth'));
+      auth.user = data;
+      localStorage.setItem('auth', JSON.stringify(auth))
+
+      setState({ ...state, user: data });
+      const filtered = people.filter((p) => p._id !== user._id);
+      setPeople(filtered);
+      newsFeed();
+      toast.success(`Following ${user.name}`)
     } catch (err) {
       console.log(err);
     }
@@ -163,7 +182,7 @@ const Dashboard = () => {
                   <Spinner />
                 </div>
               ) : (
-                <PeopleList people={people} />
+                <PeopleList people={people} handleFollow={handleFollow} />
               )}
             </Card>
           </Col>

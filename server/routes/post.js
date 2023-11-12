@@ -6,6 +6,7 @@ const {
   getPost,
   updatePost,
   deletePost,
+  newsFeed,
 } = require("../controllers/post");
 const router = express.Router();
 
@@ -31,5 +32,7 @@ router.put('/update-post/:_id', requireSignIn, canEditDeletePost, updatePost)
 
 // Delete Post
 router.delete('/delete-post/:_id', requireSignIn, canEditDeletePost, deletePost)
+
+router.get("/news-feed", requireSignIn, newsFeed);
 
 module.exports = router;

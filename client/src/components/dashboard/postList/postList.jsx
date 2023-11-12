@@ -28,6 +28,7 @@ const PostList = ({ posts, state, handleDelete }) => {
                     <img
                       className="sm-round-img"
                       src={post.postedBy.image.url}
+                      alt={post.postedBy.name}
                     />
                   ) : (
                     post.postedBy.name[0]
