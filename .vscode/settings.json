@@ -1,7 +1,9 @@
 {
-  "editor.wordWrap": "on",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true
+   "editor.wordWrap": "on",
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "editor.formatOnPaste": true,
+   "editor.formatOnSave": true,
+   "editor.formatOnType": true,
+   "prettier.tabWidth": 3,
+   "prettier.useTabs": true
 }

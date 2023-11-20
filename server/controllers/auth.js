@@ -266,13 +266,52 @@ const userFollow = async (req, res) => {
   res.json(user)
 };
 
+const userFollowing = async (req, res) => {
+  try {
+    const user = await User.findById(req.auth._id);
+
+    const following = await User.find({ _id: user.following }).select('-password -secret').limit(10);
+
+    res.json(following);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const removeFollower = async (req, res, next) => { 
+  try {
+    const user = await User.findByIdAndUpdate(req.body._id, {
+      $pull: { followers: req.auth._id }
+    });
+
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const userUnfollow = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.auth._id, {
+      $pull: { following: req.body._id}
+    }, { new: true })
+
+    res.json(user);
+  } catch (err) {
+		console.log(err);
+  }
+};
+
 module.exports = {
-  register,
-  login,
-  currentUser,
-  forgotPassword,
-  profileUpdate,
-  findPeople,
-  addFollower,
-  userFollow,
+	register,
+	login,
+	currentUser,
+	forgotPassword,
+	profileUpdate,
+	findPeople,
+	addFollower,
+	userFollow,
+	userFollowing,
+	removeFollower,
+	userUnfollow,
 };
