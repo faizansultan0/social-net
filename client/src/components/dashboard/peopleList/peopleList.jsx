@@ -1,7 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import "./peopleList.css";
 
-const PeopleList = ({ people, handleFollow }) => {
+const PeopleList = ({ people, handleFollow, }) => {
   return (
     <ul className="p-0 people-list">
       {people.map((user) => (

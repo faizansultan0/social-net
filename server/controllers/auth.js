@@ -278,6 +278,7 @@ const userFollowing = async (req, res) => {
   }
 }
 
+// Unfollow User
 const removeFollower = async (req, res, next) => { 
   try {
     const user = await User.findByIdAndUpdate(req.body._id, {

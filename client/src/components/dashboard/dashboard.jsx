@@ -142,6 +142,28 @@ const Dashboard = () => {
 		}
 	};
 
+	const handleLike = async (_id) => {
+		// console.log("Like this post ID: ", _id);
+		try {
+			const { data } = await axios.put("/like-post", { _id });
+			console.log("Liked: ", data);
+			newsFeed();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleUnlike = async (_id) => {
+		// console.log("Unlike this post ID: ", _id);
+		try {
+			const { data } = await axios.put("/unlike-post", { _id });
+			console.log("Unliked: ", data);
+			newsFeed();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return (
 		<UserRoute>
 			<Container fluid>
@@ -160,7 +182,7 @@ const Dashboard = () => {
 							image={image}
 						/>
 
-						{postsLoading ? (
+						{/* {postsLoading ? (
 							// <div className="d-flex justify-content-center align-items-center">
 							//   <Spinner />
 							// </div>
@@ -173,13 +195,15 @@ const Dashboard = () => {
 								<Placeholder style={{ width: "25%" }} />
 								<Placeholder xs={6} />
 							</>
-						) : (
+						) : ( */}
 							<PostList
 								posts={posts}
 								state={state}
 								handleDelete={handleDelete}
+								handleLike={handleLike}
+								handleUnlike={handleUnlike}
 							/>
-						)}
+						{/* )} */}
 					</Col>
 					<Col md={4}>
 						<Card className="p-2 min-h-450">
