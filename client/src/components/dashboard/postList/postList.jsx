@@ -13,7 +13,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./postList.css";
 
-const PostList = ({ posts, state, handleDelete, handleLike, handleUnlike }) => {
+const PostList = ({
+	posts,
+	state,
+	handleDelete,
+	handleLike,
+	handleUnlike,
+	handleComment,
+	removeComment,
+}) => {
 	// console.log(`Received Posts: `, posts);
 	// console.log('State Received for the List is:=> ', state)
 	return (
@@ -71,13 +79,16 @@ const PostList = ({ posts, state, handleDelete, handleLike, handleUnlike }) => {
 									/>
 								</div>
 							)}
-							<div className="icons-div d-flex align-items-center gap-3">
+							<div className="icons-div d-flex align-items-center gap-3 mb-1">
 								<div className="icon-div d-inline-flex align-items-center gap-1 m-0">
-									{post.likes.includes(state.user._id) ? (
+									{state &&
+									state.user &&
+									post.likes &&
+									post.likes.includes(state.user._id) ? (
 										<FontAwesomeIcon
 											icon={solidHeart}
-                      className="text-danger h5"
-                      onClick={()=> handleUnlike(post._id)}
+											className="text-danger h5"
+											onClick={() => handleUnlike(post._id)}
 										/>
 									) : (
 										<FontAwesomeIcon
@@ -88,10 +99,75 @@ const PostList = ({ posts, state, handleDelete, handleLike, handleUnlike }) => {
 									)}
 									<span>{post.likes.length} likes</span>
 								</div>
-								<div className="icon-div d-inline-flex align-items-center gap-1 m-0">
+								<button
+									onClick={() => {
+										handleComment(post);
+									}}
+									className="border-0 font-weight-normal icon-div d-inline-flex align-items-center gap-1 m-0"
+								>
 									<FontAwesomeIcon icon={faComment} className="h5" />
-									<span>2 comments</span>
-								</div>
+									<span>
+										<Link
+											className="text-decoration-none"
+											to={`/post/${post._id}`}
+										>
+											{post.comments.length} comments
+										</Link>
+									</span>
+								</button>
+							</div>
+							{/* 2 Comments */}
+							<div className="comments-div">
+								{post.comments && post.comments.length > 0 && (
+									<>
+										{/* <h3 className="comments-heading ps-3">
+											Comments
+										</h3> */}
+										<ul className="list-group ps-3">
+											{post.comments.slice(0, 2).map((c) => (
+												<li
+													key={c._id}
+													className="list-group-item d-flex justify-content-between align-items-start ps-2 border border-2 mb-2"
+												>
+													<div>
+														<div className="d-flex comment-header mb-1">
+															<div className="bg-dark text-light rounded-circle post-avatar sm-round-parent">
+																{c.postedBy.image ? (
+																	<img
+																		className="sm-round-img"
+																		src={c.postedBy.image.url}
+																		alt={c.postedBy.name}
+																	/>
+																) : (
+																	c.postedBy.name[0]
+																)}
+															</div>
+															<span>{c.postedBy.name}</span>
+														</div>
+														<p className="mb-0">{c.text}</p>
+													</div>
+													<div className="badge rounded-pill text-muted">
+														{moment(c.created).fromNow()}
+														{state &&
+															state.user &&
+															state.user._id ===
+																c.postedBy._id && (
+																<div className="mt-3 ml-auto d-flex justify-content-end">
+																	<FontAwesomeIcon
+																		icon={faTrashCan}
+																		className="text-danger"
+																		onClick={() =>
+																			removeComment(post._id, c)
+																		}
+																	/>
+																</div>
+															)}
+													</div>
+												</li>
+											))}
+										</ul>
+									</>
+								)}
 							</div>
 						</div>
 					</div>

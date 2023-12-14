@@ -5,7 +5,9 @@ import {
 	Col,
 	Spinner,
 	Card,
-	Placeholder,
+	Modal,
+	Form,
+	Button,
 } from "react-bootstrap";
 import PostForm from "./postForm/postForm";
 import { useState, useEffect, useContext } from "react";
@@ -33,6 +35,11 @@ const Dashboard = () => {
 	// Find People
 	const [people, setPeople] = useState([]);
 	const [peopleLoading, setPeopleLoading] = useState(false);
+
+	// Comments
+	const [comment, setComment] = useState("");
+	const [visible, setVisible] = useState(false);
+	const [currentPost, setCurrentPost] = useState({});
 
 	useEffect(() => {
 		if (state && state.token) {
@@ -146,7 +153,7 @@ const Dashboard = () => {
 		// console.log("Like this post ID: ", _id);
 		try {
 			const { data } = await axios.put("/like-post", { _id });
-			console.log("Liked: ", data);
+			// console.log("Liked: ", data);
 			newsFeed();
 		} catch (err) {
 			console.log(err);
@@ -157,7 +164,45 @@ const Dashboard = () => {
 		// console.log("Unlike this post ID: ", _id);
 		try {
 			const { data } = await axios.put("/unlike-post", { _id });
-			console.log("Unliked: ", data);
+			// console.log("Unliked: ", data);
+			newsFeed();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleComment = (post) => {
+		setCurrentPost(post);
+		setVisible(true);
+	};
+
+	const addComment = async (e) => {
+		e.preventDefault();
+		// console.log('Add comment ', comment, currentPost._id);
+		try {
+			const { data } = await axios.put("/add-comment", {
+				postId: currentPost._id,
+				comment,
+			});
+
+			console.log("Add Comment: ", data);
+			setComment("");
+			newsFeed();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const removeComment = async (postId, comment) => {
+		// console.log(postId, comment);
+		let answer = window.confirm("Are you sure want to delete comment?");
+		if (!answer) return;
+		try {
+			const { data } = await axios.put("/remove-comment", {
+				postId,
+				comment,
+			});
+			console.log("Comment removed, ", data);
 			newsFeed();
 		} catch (err) {
 			console.log(err);
@@ -196,13 +241,15 @@ const Dashboard = () => {
 								<Placeholder xs={6} />
 							</>
 						) : ( */}
-							<PostList
-								posts={posts}
-								state={state}
-								handleDelete={handleDelete}
-								handleLike={handleLike}
-								handleUnlike={handleUnlike}
-							/>
+						<PostList
+							posts={posts}
+							state={state}
+							handleDelete={handleDelete}
+							handleLike={handleLike}
+							handleUnlike={handleUnlike}
+							handleComment={handleComment}
+							removeComment={removeComment}
+						/>
 						{/* )} */}
 					</Col>
 					<Col md={4}>
@@ -244,6 +291,26 @@ const Dashboard = () => {
 						</Card>
 					</Col>
 				</Row>
+				<Modal show={visible} onHide={() => setVisible(false)}>
+					<Modal.Header closeButton>
+						<Modal.Title>Comments</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>Comments will be shown here</Modal.Body>
+					<Modal.Footer>
+						<Form onSubmit={addComment} className="w-100 d-flex gap-2">
+							<Form.Control
+								size="sm"
+								type="text"
+								placeholder="Write something..."
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
+							/>
+							<Button type="submit" size="sm">
+								Submit
+							</Button>
+						</Form>
+					</Modal.Footer>
+				</Modal>
 			</Container>
 		</UserRoute>
 	);

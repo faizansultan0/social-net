@@ -44,3 +44,22 @@
 .user-post .icon-div * {
     margin: 0;
 }
+
+.comments-div .sm-round-parent {
+    width: 30px;
+    height: 30px;
+}
+
+.comments-heading {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.comment-header {
+    gap: 5px;
+    align-items: center;
+}
+
+.comment-header span {
+    font-size: 14px;
+}

@@ -17,7 +17,7 @@ const Login = () => {
 
     // Redirecting User to Home Page if LogedIn
     if(state && state.token) {
-        navigate('/');
+        navigate("/user/dashboard");
     }
 
 

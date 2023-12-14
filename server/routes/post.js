@@ -9,6 +9,8 @@ const {
 	newsFeed,
 	likePost,
 	unlikePost,
+	addComment,
+	removeComment
 } = require("../controllers/post");
 const router = express.Router();
 
@@ -46,5 +48,9 @@ router.get("/news-feed", requireSignIn, newsFeed);
 // Like and Unlike
 router.put("/like-post", requireSignIn, likePost);
 router.put("/unlike-post", requireSignIn, unlikePost);
+
+// Comments
+router.put("/add-comment", requireSignIn, addComment);
+router.put("/remove-comment", requireSignIn, removeComment);
 
 module.exports = router;
