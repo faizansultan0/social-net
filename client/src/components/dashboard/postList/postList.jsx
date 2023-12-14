@@ -157,7 +157,10 @@ const PostList = ({
 																		icon={faTrashCan}
 																		className="text-danger"
 																		onClick={() =>
-																			removeComment(post._id, c)
+																			removeComment(
+																				post._id,
+																				c
+																			)
 																		}
 																	/>
 																</div>

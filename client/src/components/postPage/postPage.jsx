@@ -96,28 +96,29 @@ const PostComments = () => {
 				comment,
 			});
 
-			console.log("Add Comment: ", data);
+			// console.log("Add Comment: ", data);
 			setComment("");
+            fetchPost();
+            setVisible(false);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const removeComment = async (postId, comment) => {
+		// console.log(postId, comment);
+		let answer = window.confirm("Are you sure want to delete comment?");
+		if (!answer) return;
+		try {
+			const { data } = await axios.put("/remove-comment", {
+				postId,
+				comment,
+			});
 			fetchPost();
 		} catch (err) {
 			console.log(err);
 		}
-    };
-    
-    const removeComment = async (postId, comment) => {
-        // console.log(postId, comment);
-        let answer = window.confirm('Are you sure want to delete comment?');
-        if (!answer) return;
-        try {
-            const { data } = await axios.put('/remove-comment', {
-                postId, comment
-            })
-            console.log('Comment removed, ', data);
-            fetchPost();
-        } catch (err) {
-            console.log(err);
-        }
-    }
+	};
 
 	return (
 		<>
@@ -280,8 +281,13 @@ const PostComments = () => {
 																	<div className="mt-3 ml-auto d-flex justify-content-end">
 																		<FontAwesomeIcon
 																			icon={faTrashCan}
-                                                                        className="text-danger"
-                                                                        onClick={() => {removeComment(post._id, c)}}
+																			className="text-danger"
+																			onClick={() => {
+																				removeComment(
+																					post._id,
+																					c
+																				);
+																			}}
 																		/>
 																	</div>
 																)}

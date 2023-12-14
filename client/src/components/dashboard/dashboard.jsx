@@ -188,6 +188,7 @@ const Dashboard = () => {
 			console.log("Add Comment: ", data);
 			setComment("");
 			newsFeed();
+			setVisible(false);
 		} catch (err) {
 			console.log(err);
 		}
@@ -202,7 +203,6 @@ const Dashboard = () => {
 				postId,
 				comment,
 			});
-			console.log("Comment removed, ", data);
 			newsFeed();
 		} catch (err) {
 			console.log(err);
