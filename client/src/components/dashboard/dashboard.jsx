@@ -14,6 +14,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context";
 import { toast } from "react-toastify";
+import { Pagination } from "antd";
 import axios from "axios";
 import PostList from "./postList/postList";
 import PeopleList from "./peopleList/peopleList";
@@ -41,17 +42,36 @@ const Dashboard = () => {
 	const [visible, setVisible] = useState(false);
 	const [currentPost, setCurrentPost] = useState({});
 
+	// Pagination
+	const [totalPosts, setTotalPosts] = useState(0);
+	const [page, setPage] = useState(1);
+
+	useEffect(() => {
+		try {
+			if (state && state.token) {
+				axios.get("total-posts").then(({ data }) => setTotalPosts(data));
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}, [state, state.token]);
+
 	useEffect(() => {
 		if (state && state.token) {
-			newsFeed();
 			findPeople();
 		}
 	}, [state, state.token]);
 
+	useEffect(() => {
+		if (state && state.token) {
+			newsFeed();
+		}
+	}, [state, state.token, page]);
+
 	const newsFeed = async () => {
 		try {
 			setPostsLoading(true);
-			const { data } = await axios.get(`/news-feed`);
+			const { data } = await axios.get(`/news-feed/${page}`);
 			// console.log('User Posts => ', data);
 			setPosts(data);
 			setPostsLoading(false);
@@ -72,7 +92,8 @@ const Dashboard = () => {
 			if (data.error) {
 				toast.error(data.error);
 			} else {
-				setPosts([data, ...posts]);
+				setPage(1);
+				// setPosts([data, ...posts]);
 				newsFeed();
 				toast.success("Post Created Successfully!");
 				setContent("");
@@ -152,7 +173,7 @@ const Dashboard = () => {
 	const handleLike = async (_id) => {
 		// console.log("Like this post ID: ", _id);
 		try {
-			const { data } = await axios.put("/like-post", { _id });
+			await axios.put("/like-post", { _id });
 			// console.log("Liked: ", data);
 			newsFeed();
 		} catch (err) {
@@ -163,7 +184,7 @@ const Dashboard = () => {
 	const handleUnlike = async (_id) => {
 		// console.log("Unlike this post ID: ", _id);
 		try {
-			const { data } = await axios.put("/unlike-post", { _id });
+			await axios.put("/unlike-post", { _id });
 			// console.log("Unliked: ", data);
 			newsFeed();
 		} catch (err) {
@@ -180,12 +201,12 @@ const Dashboard = () => {
 		e.preventDefault();
 		// console.log('Add comment ', comment, currentPost._id);
 		try {
-			const { data } = await axios.put("/add-comment", {
+			await axios.put("/add-comment", {
 				postId: currentPost._id,
 				comment,
 			});
 
-			console.log("Add Comment: ", data);
+			// console.log("Add Comment: ", data);
 			setComment("");
 			newsFeed();
 			setVisible(false);
@@ -199,7 +220,7 @@ const Dashboard = () => {
 		let answer = window.confirm("Are you sure want to delete comment?");
 		if (!answer) return;
 		try {
-			const { data } = await axios.put("/remove-comment", {
+			await axios.put("/remove-comment", {
 				postId,
 				comment,
 			});
@@ -250,6 +271,14 @@ const Dashboard = () => {
 							handleComment={handleComment}
 							removeComment={removeComment}
 						/>
+						<div className="d-flex justify-content-center">
+							<Pagination
+								current={page}
+								total={totalPosts}
+								defaultPageSize={4}
+								onChange={(value) => { setPage(value); window.scrollTo({top: 0})}}
+							/>
+						</div>
 						{/* )} */}
 					</Col>
 					<Col md={4}>

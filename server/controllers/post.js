@@ -8,6 +8,15 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_SECRET,
 });
 
+const totalPosts = async (req, res) => {
+	try {
+		const total = await Post.find().estimatedDocumentCount();
+		res.json(total);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 const createPost = async (req, res) => {
 	// console.log('Post Body: ', req.body);
 	const { content, image } = req.body;
@@ -63,8 +72,8 @@ const getPost = async (req, res) => {
 
 	try {
 		const post = await Post.findById(_id)
-			.populate('postedBy', '_id name image')
-			.populate('comments.postedBy', '_id name image');
+			.populate("postedBy", "_id name image")
+			.populate("comments.postedBy", "_id name image");
 
 		res.json(post);
 	} catch (err) {
@@ -107,11 +116,16 @@ const newsFeed = async (req, res) => {
 		const user = await User.findById(req.auth._id);
 		let following = user.following;
 		following.push(req.auth._id);
+		// Pagination
+		const currentPage = req.params.page;
+		const perPage = 4;
 
 		const posts = await Post.find({ postedBy: { $in: following } })
-			.populate("postedBy", "_id name image").populate('comments.postedBy', '_id name image')
+			.skip((currentPage - 1) * perPage)
+			.populate("postedBy", "_id name image")
+			.populate("comments.postedBy", "_id name image")
 			.sort({ createdAt: -1 })
-			.limit(10);
+			.limit(perPage);
 
 		res.json(posts);
 	} catch (err) {
@@ -155,13 +169,17 @@ const unlikePost = async (req, res) => {
 const addComment = async (req, res) => {
 	try {
 		const { postId, comment } = req.body;
-		const post = await Post.findByIdAndUpdate(postId, {
-			$push: { comments: { text: comment, postedBy: req.auth._id } }
-		}, {
-			new: true
-		}).populate('postedBy', '_id name image')
-			
-		res.json(post)
+		const post = await Post.findByIdAndUpdate(
+			postId,
+			{
+				$push: { comments: { text: comment, postedBy: req.auth._id } },
+			},
+			{
+				new: true,
+			}
+		).populate("postedBy", "_id name image");
+
+		res.json(post);
 	} catch (err) {
 		console.log(err);
 	}
@@ -186,6 +204,7 @@ const removeComment = async (req, res) => {
 };
 
 module.exports = {
+	totalPosts,
 	createPost,
 	uploadImage,
 	postsByUser,

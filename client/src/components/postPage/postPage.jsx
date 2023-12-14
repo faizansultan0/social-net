@@ -74,7 +74,7 @@ const PostComments = () => {
 	const handleUnlike = async (_id) => {
 		// console.log("Unlike this post ID: ", _id);
 		try {
-			const { data } = await axios.put("/unlike-post", { _id });
+			await axios.put("/unlike-post", { _id });
 			// console.log("Unliked: ", data);
 			fetchPost();
 		} catch (err) {
@@ -91,7 +91,7 @@ const PostComments = () => {
 		e.preventDefault();
 		// console.log('Add comment ', comment, currentPost._id);
 		try {
-			const { data } = await axios.put("/add-comment", {
+			await axios.put("/add-comment", {
 				postId: currentPost._id,
 				comment,
 			});
@@ -110,7 +110,7 @@ const PostComments = () => {
 		let answer = window.confirm("Are you sure want to delete comment?");
 		if (!answer) return;
 		try {
-			const { data } = await axios.put("/remove-comment", {
+			await axios.put("/remove-comment", {
 				postId,
 				comment,
 			});
@@ -268,9 +268,13 @@ const PostComments = () => {
 																		c.postedBy.name[0]
 																	)}
 																</div>
-																<span>{c.postedBy.name}</span>
+																<span className="comment-poster-name">
+																	{c.postedBy.name}
+																</span>
 															</div>
-															<p className="mb-0">{c.text}</p>
+															<p className="mb-0 comment-line">
+																{c.text}
+															</p>
 														</div>
 														<div className="badge rounded-pill text-muted">
 															{moment(c.created).fromNow()}

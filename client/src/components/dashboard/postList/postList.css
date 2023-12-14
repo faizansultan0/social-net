@@ -60,6 +60,12 @@
     align-items: center;
 }
 
-.comment-header span {
+.comment-poster-name {
     font-size: 14px;
+    font-weight: 500;
+}
+
+.comment-line {
+    font-size: 14px;
+    font-family: 'Helvetica', sans-serif;
 }

@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+	totalPosts,
 	createPost,
 	uploadImage,
 	postsByUser,
@@ -10,7 +11,7 @@ const {
 	likePost,
 	unlikePost,
 	addComment,
-	removeComment
+	removeComment,
 } = require("../controllers/post");
 const router = express.Router();
 
@@ -43,7 +44,9 @@ router.delete(
 );
 
 // Render Posts
-router.get("/news-feed", requireSignIn, newsFeed);
+router.get("/news-feed/:page", requireSignIn, newsFeed);
+
+router.get('/total-posts', requireSignIn, totalPosts);
 
 // Like and Unlike
 router.put("/like-post", requireSignIn, likePost);

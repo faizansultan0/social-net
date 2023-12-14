@@ -4,7 +4,7 @@ import "./peopleList.css";
 const PeopleList = ({ people, handleFollow, }) => {
   return (
     <ul className="p-0 people-list">
-      {people.map((user) => (
+      {people.slice(0, 5).map((user) => (
         <Card className="people-card mb-2 p-2" key={user._id}>
           <div className="left-part">
             {user && user.image && user.image.url ? (

@@ -117,12 +117,9 @@ const PostList = ({
 								</button>
 							</div>
 							{/* 2 Comments */}
-							<div className="comments-div">
+							<div className="comments-div pt-2">
 								{post.comments && post.comments.length > 0 && (
 									<>
-										{/* <h3 className="comments-heading ps-3">
-											Comments
-										</h3> */}
 										<ul className="list-group ps-3">
 											{post.comments.slice(0, 2).map((c) => (
 												<li
@@ -142,9 +139,9 @@ const PostList = ({
 																	c.postedBy.name[0]
 																)}
 															</div>
-															<span>{c.postedBy.name}</span>
+															<span className="comment-poster-name">{c.postedBy.name}</span>
 														</div>
-														<p className="mb-0">{c.text}</p>
+														<p className="mb-0 comment-line">{c.text}</p>
 													</div>
 													<div className="badge rounded-pill text-muted">
 														{moment(c.created).fromNow()}
