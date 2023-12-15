@@ -66,12 +66,12 @@ const NavBar = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <NavLink
+                    {/* <NavLink
                       className="text-decoration-none dropdown-item"
-                      to="/user/dashboard"
+                      to="/"
                     >
                       Dashboard
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink
                       className="text-decoration-none dropdown-item"
                       to="/user/profile/update"

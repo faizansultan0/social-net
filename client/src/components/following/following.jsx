@@ -96,7 +96,7 @@ const Following = () => {
 
 				<div className="link-div text-center">
 					<Link
-						to="/user/dashboard"
+						to="/"
 						className="text-decoration-none text-primary"
 					>
 						Back to Dashboard

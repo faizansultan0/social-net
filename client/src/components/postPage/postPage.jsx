@@ -125,7 +125,7 @@ const PostComments = () => {
 			<Container>
 				<UserRoute>
 					<div className="back-div py-2">
-						<Link to="/user/dashboard" className="text-decoration-none">
+						<Link to="/" className="text-decoration-none">
 							<FontAwesomeIcon className="pe-2" icon={faArrowLeft} />
 							Back
 						</Link>

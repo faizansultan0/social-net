@@ -40,7 +40,7 @@ const PublicProfile = () => {
 			<Container>
 				<div className="link-div py-2">
 					<Link
-						to="/user/dashboard"
+						to="/"
 						className="text-decoration-none text-primary mb-2"
                     >
                         <FontAwesomeIcon icon={faArrowLeft} className="me-2" />

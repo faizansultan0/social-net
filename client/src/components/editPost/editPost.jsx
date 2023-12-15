@@ -46,7 +46,7 @@ const EditPost = () => {
         toast.error(data.err);
       } else {
         toast.success("Post updated successfully!");
-        navigate("/user/dashboard");
+        navigate("/");
       }
     } catch (err) {
       console.log(err);

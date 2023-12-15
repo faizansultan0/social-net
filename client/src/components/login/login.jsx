@@ -17,7 +17,7 @@ const Login = () => {
 
     // Redirecting User to Home Page if LogedIn
     if(state && state.token) {
-        navigate("/user/dashboard");
+        navigate("/");
     }
 
 
@@ -43,7 +43,7 @@ const Login = () => {
                 window.localStorage.setItem('auth', JSON.stringify(data))
     
                 // console.log(res.data.ok)
-                navigate('/user/dashboard');
+                navigate('/');
                 setLoading(false);
                 setEmail('');
                 setPassword('');                
