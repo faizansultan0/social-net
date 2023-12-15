@@ -15,3 +15,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.people-list .people-card:last-of-type {
+    margin-bottom: 0!important;
+}

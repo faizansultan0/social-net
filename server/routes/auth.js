@@ -11,6 +11,7 @@ const {
 	userFollowing,
 	removeFollower,
 	userUnfollow,
+	searchUser,
 } = require("../controllers/auth");
 
 const router = express.Router();
@@ -28,5 +29,7 @@ router.get('/find-people', requireSignIn, findPeople)
 router.put('/user-follow', requireSignIn, addFollower, userFollow)
 router.put("/user-unfollow", requireSignIn, removeFollower, userUnfollow);
 router.get('/user-following', requireSignIn, userFollowing)
+
+router.get('/search-user/:query', searchUser);
 
 module.exports = router;

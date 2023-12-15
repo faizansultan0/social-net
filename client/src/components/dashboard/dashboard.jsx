@@ -18,6 +18,7 @@ import { Pagination } from "antd";
 import axios from "axios";
 import PostList from "./postList/postList";
 import PeopleList from "./peopleList/peopleList";
+import SearchForm from "./searchForm/searchForm";
 import "./dashboard.css";
 
 const Dashboard = () => {
@@ -271,11 +272,11 @@ const Dashboard = () => {
 							handleComment={handleComment}
 							removeComment={removeComment}
 						/>
-						<div className="d-flex justify-content-center">
+						<div className="d-flex justify-content-center mb-lg-0 mb-2">
 							<Pagination
 								current={page}
 								total={totalPosts}
-								defaultPageSize={4}
+								defaultPageSize={3}
 								onChange={(value) => { setPage(value); window.scrollTo({top: 0})}}
 							/>
 						</div>
@@ -283,6 +284,7 @@ const Dashboard = () => {
 					</Col>
 					<Col md={4}>
 						<Card className="p-2 min-h-450">
+							<SearchForm />
 							{state.user && state.user && state.user.following && (
 								<Link
 									to={`/user/following`}
