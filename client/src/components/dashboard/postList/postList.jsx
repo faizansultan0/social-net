@@ -43,9 +43,12 @@ const PostList = ({
 									)}
 								</div>
 								<div className="right-content">
-									<span className="name d-block">
+									<Link
+										className="name text-dark text-decoration-none"
+										to={`/user/${post.postedBy.username}`}
+									>
 										{post.postedBy.name}
-									</span>
+									</Link>
 									<span className="date d-block">
 										{moment(post.createdAt).fromNow()}
 									</span>
@@ -139,9 +142,13 @@ const PostList = ({
 																	c.postedBy.name[0]
 																)}
 															</div>
-															<span className="comment-poster-name">{c.postedBy.name}</span>
+															<Link className="comment-poster-name text-dark text-decoration-none" to={`/user/${c.postedBy.username}`}>
+																{c.postedBy.name}
+															</Link>
 														</div>
-														<p className="mb-0 comment-line">{c.text}</p>
+														<p className="mb-0 comment-line">
+															{c.text}
+														</p>
 													</div>
 													<div className="badge rounded-pill text-muted">
 														{moment(c.created).fromNow()}

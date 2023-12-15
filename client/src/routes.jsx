@@ -9,6 +9,7 @@ import EditPost from "./components/editPost/editPost";
 import ProfileUpdate from "./components/profileUpdate/profileUpdate";
 import Following from "./components/following/following";
 import PostComments from "./components/postPage/postPage";
+import PublicProfile from "./components/publicProfile/publicProfile";
 
 const PageRoutes = () => {
 	return (
@@ -22,6 +23,7 @@ const PageRoutes = () => {
 			<Route path="/user/profile/update" element={<ProfileUpdate />} />
 			<Route path="/user/following" element={<Following />} />
 			<Route path={`/post/:_id`} element={<PostComments />} />
+			<Route path='/user/:username' element={<PublicProfile />} />
 			<Route path="*" element={<PageNotFound />} />
 		</Routes>
 	);

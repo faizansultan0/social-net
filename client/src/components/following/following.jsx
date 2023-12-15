@@ -64,9 +64,14 @@ const Following = () => {
 													{user.name[0]}
 												</div>
 											)}
-											<div className="info-div">
+											<div className="info-div d-flex align-items-center">
 												<Card.Title className="h6">
-													{user.name}
+													<Link
+														className="text-dark text-decoration-none"
+														to={`/user/${user.username}`}
+													>
+														{user.name}
+													</Link>
 												</Card.Title>
 											</div>
 										</div>

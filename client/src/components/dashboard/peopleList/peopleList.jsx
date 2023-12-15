@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { useContext } from "react";
 import { UserContext } from "../../../context";
@@ -21,12 +22,17 @@ const PeopleList = ({ people, handleFollow, handleUnfollow }) => {
 						) : (
 							<div className="sm-round-parent">{user.name[0]}</div>
 						)}
-						<div className="info-div">
-							<Card.Title className="h6">{user.name}</Card.Title>
+						<div className="info-div d-flex align-items-center">
+							<Card.Title className="h6 m-0">
+								<Link className="text-dark text-decoration-none" to={`/user/${user.username}`}>{user.name}</Link>
+							</Card.Title>
 						</div>
 					</div>
 					<div className="right-part">
-						{state && state.user && user.followers && user.followers.includes(state.user._id) ? (
+						{state &&
+						state.user &&
+						user.followers &&
+						user.followers.includes(state.user._id) ? (
 							<Button
 								onClick={() => handleUnfollow(user)}
 								className="bg-transparent border-0 text-primary p-2"

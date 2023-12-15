@@ -50,7 +50,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		try {
 			if (state && state.token) {
-				axios.get("total-posts").then(({ data }) => setTotalPosts(data));
+				axios.get("total-posts").then(({ data }) => { setTotalPosts(data-3);  console.log('Total posts: ', data)});
 			}
 		} catch (err) {
 			console.log(err);
@@ -99,6 +99,7 @@ const Dashboard = () => {
 				toast.success("Post Created Successfully!");
 				setContent("");
 				setImage({});
+				setTotalPosts(totalPosts+1)
 			}
 		} catch (err) {
 			console.log(err);
@@ -277,6 +278,7 @@ const Dashboard = () => {
 								current={page}
 								total={totalPosts}
 								defaultPageSize={3}
+								pageSize={3}
 								onChange={(value) => { setPage(value); window.scrollTo({top: 0})}}
 							/>
 						</div>

@@ -330,6 +330,17 @@ const searchUser = async (req, res) => {
 	}
 };
 
+const getUser = async (req, res) => {
+	const {username} = req.params;
+	try {
+		const user = await User.findOne({ username })
+			.select('-password -secret');
+		res.json(user);
+	} catch (err) {
+		console.log(err);
+	}
+}
+
 module.exports = {
 	register,
 	login,
@@ -343,4 +354,5 @@ module.exports = {
 	removeFollower,
 	userUnfollow,
 	searchUser,
+	getUser,
 };
