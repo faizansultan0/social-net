@@ -3,7 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { UserContext } from "../../context";
 import { Link } from "react-router-dom";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 import axios from "axios";
 // import "./peopleList.css";
 
@@ -39,6 +40,10 @@ const Following = () => {
 	};
 	return (
 		<div className="following-page">
+			<Helmet>
+				<title>Following</title>
+				<meta name="description" content="User Following List Page" />
+			</Helmet>
 			<Container>
 				<h1 className="h2 text-center pt-3 mb-2">Following</h1>
 				<Row>
@@ -48,7 +53,7 @@ const Following = () => {
 								people.map((user) => (
 									<Card
 										className="people-card mb-2 p-2"
-										key={people._id}
+										key={user._id}
 									>
 										<div className="left-part">
 											{user && user.image && user.image.url ? (

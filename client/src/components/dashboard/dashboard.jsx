@@ -19,6 +19,7 @@ import axios from "axios";
 import PostList from "./postList/postList";
 import PeopleList from "./peopleList/peopleList";
 import SearchForm from "./searchForm/searchForm";
+import { Helmet } from 'react-helmet';
 import "./dashboard.css";
 
 const Dashboard = () => {
@@ -234,6 +235,10 @@ const Dashboard = () => {
 
 	return (
 		<UserRoute>
+			<Helmet>
+				<title>Dashboard</title>
+				<meta name="description" content="User Dashboard" />
+			</Helmet>
 			<Container fluid>
 				<div className="py-4">
 					<h1 className="text-center">Newsfeed</h1>

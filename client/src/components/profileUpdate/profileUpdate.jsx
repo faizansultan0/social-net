@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { Helmet } from "react-helmet";
 import './profileUpdate.css'
 
 const ProfileUpdate = () => {
@@ -95,114 +96,138 @@ const ProfileUpdate = () => {
   };
 
   return (
-    <div className="register profileUpdatePage">
-      <Container fluid>
-        <h1 className="text-center py-2">Profile</h1>
-        <label className="profile-labeldiv d-flex justify-content-center align-items-center">
-          {image && image.url ? (
-            <div className="profile-img-div">
-              <Image src={image.url} roundedCircle className="profile-img" />
-            </div>
-          ) : uploading ? (
-            <Spinner animation="border" role="status" size="sm">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          ) : (
-            <FontAwesomeIcon icon={faCamera} />
-          )}
-          <input onChange={handleImage} type="file" accept="images/*" hidden />
-        </label>
-        <Row className="py-3 m-0">
-          <Col md={{ span: 6, offset: 3 }}>
-            <Form onSubmit={submitHandler}>
-              <Form.Group className="mb-3">
-                <Form.Label className="text-muted">Username</Form.Label>
-                <Form.Control
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  type="text"
-                  placeholder="Enter username"
-                />
-              </Form.Group>
+		<div className="register profileUpdatePage">
+			<Helmet>
+				<title>Profile</title>
+				<meta name="description" content="User Profile Update Page" />
+			</Helmet>
+			<Container fluid>
+				<h1 className="text-center py-2">Profile</h1>
+				<label className="profile-labeldiv d-flex justify-content-center align-items-center">
+					{image && image.url ? (
+						<div className="profile-img-div">
+							<Image
+								src={image.url}
+								roundedCircle
+								className="profile-img"
+							/>
+						</div>
+					) : uploading ? (
+						<Spinner animation="border" role="status" size="sm">
+							<span className="visually-hidden">Loading...</span>
+						</Spinner>
+					) : (
+						<FontAwesomeIcon icon={faCamera} />
+					)}
+					<input
+						onChange={handleImage}
+						type="file"
+						accept="images/*"
+						hidden
+					/>
+				</label>
+				<Row className="py-3 m-0">
+					<Col md={{ span: 6, offset: 3 }}>
+						<Form onSubmit={submitHandler}>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">Username</Form.Label>
+								<Form.Control
+									value={username}
+									onChange={(e) => setUsername(e.target.value)}
+									type="text"
+									placeholder="Enter username"
+								/>
+							</Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="text-muted">About</Form.Label>
-                <Form.Control
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value)}
-                  type="text"
-                  placeholder="Write about yourself"
-                />
-              </Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">About</Form.Label>
+								<Form.Control
+									value={about}
+									onChange={(e) => setAbout(e.target.value)}
+									type="text"
+									placeholder="Write about yourself"
+								/>
+							</Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="text-muted">Your Name</Form.Label>
-                <Form.Control
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  placeholder="Enter name"
-                />
-              </Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">
+									Your Name
+								</Form.Label>
+								<Form.Control
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									type="text"
+									placeholder="Enter name"
+								/>
+							</Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="text-muted">Email address</Form.Label>
-                <Form.Control
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="Enter email"
-                  disabled
-                />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">
+									Email address
+								</Form.Label>
+								<Form.Control
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									type="email"
+									placeholder="Enter email"
+									disabled
+								/>
+								<Form.Text className="text-muted">
+									We'll never share your email with anyone else.
+								</Form.Text>
+							</Form.Group>
 
-              <Form.Group>
-                <Form.Label className="text-muted">Pick a question</Form.Label>
-                <Form.Select>
-                  <option>What is your favourite color?</option>
-                  <option>What is your best friend's name?</option>
-                  <option>What is your birth city?</option>
-                </Form.Select>
-                <Form.Text>
-                  You can use this to reset your password if forgotten.
-                </Form.Text>
-              </Form.Group>
+							<Form.Group>
+								<Form.Label className="text-muted">
+									Pick a question
+								</Form.Label>
+								<Form.Select>
+									<option>What is your favourite color?</option>
+									<option>What is your best friend's name?</option>
+									<option>What is your birth city?</option>
+								</Form.Select>
+								<Form.Text>
+									You can use this to reset your password if forgotten.
+								</Form.Text>
+							</Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Control
-                  value={secret}
-                  onChange={(e) => setSecret(e.target.value)}
-                  type="text"
-                  placeholder="Write your answer here"
-                />
-              </Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Control
+									value={secret}
+									onChange={(e) => setSecret(e.target.value)}
+									type="text"
+									placeholder="Write your answer here"
+								/>
+							</Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="text-muted">Password</Form.Label>
-                <Form.Control
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  placeholder="Password"
-                />
-              </Form.Group>
-              <button disabled={loading || uploading} className="btn btn-primary w-100 mb-3">
-                {loading ? (
-                  <Spinner animation="border" role="status" size="sm">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                ) : (
-                  "Update Profile"
-                )}
-              </button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">Password</Form.Label>
+								<Form.Control
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									type="password"
+									placeholder="Password"
+								/>
+							</Form.Group>
+							<button
+								disabled={loading || uploading}
+								className="btn btn-primary w-100 mb-3"
+							>
+								{loading ? (
+									<Spinner animation="border" role="status" size="sm">
+										<span className="visually-hidden">
+											Loading...
+										</span>
+									</Spinner>
+								) : (
+									"Update Profile"
+								)}
+							</button>
+						</Form>
+					</Col>
+				</Row>
+			</Container>
+		</div>
   );
 };
 
