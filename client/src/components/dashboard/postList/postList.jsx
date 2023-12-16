@@ -28,7 +28,7 @@ const PostList = ({
 		<div>
 			{posts &&
 				posts.map((post) => (
-					<div key={post._id} className="card mb-5 user-post">
+					<div key={post._id} className="card mb-3 user-post">
 						<div className="card-header">
 							<div className="left-part">
 								<div className="bg-dark text-light rounded-circle post-avatar sm-round-parent">

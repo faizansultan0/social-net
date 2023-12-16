@@ -248,7 +248,7 @@ const Dashboard = () => {
 					<h1 className="text-center mb-0">Dashboard</h1>
 				</div> */}
 
-				<Row>
+				<Row className="pt-2">
 					<Col md={8}>
 						<PostForm
 							content={content}
@@ -283,7 +283,7 @@ const Dashboard = () => {
 									handleComment={handleComment}
 									removeComment={removeComment}
 								/>
-								<div className="d-flex justify-content-center mb-lg-0 mb-2">
+								<div className="d-flex justify-content-center pb-3">
 									<Pagination
 										current={page}
 										total={totalPosts}
@@ -307,7 +307,7 @@ const Dashboard = () => {
 								state.user.following && (
 									<Link
 										to={`/user/following`}
-										className="link-underline link-underline-opacity-0 mb-3"
+										className="link-underline link-underline-opacity-0 my-3"
 									>{`${state.user.following.length} Following`}</Link>
 								)}
 							<h2 className="h5">About</h2>
@@ -324,7 +324,7 @@ const Dashboard = () => {
 							{state && state.user && (
 								<Link
 									to={`/user/${state.user.username}`}
-									className="text-small d-block mb-3"
+									className="text-small text-decoration-none d-block mb-3"
 								>
 									{state.user.username}
 								</Link>
