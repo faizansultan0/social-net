@@ -59,7 +59,7 @@ const SearchForm = () => {
 	return (
 		<div className="card p-2">
 			<form className="row" onSubmit={searchUser}>
-				<div className="col-8">
+				<div className="col-sm-8 col-12 mb-sm-0 mb-2">
 					<input
 						onChange={(e) => {
 							setQuery(e.target.value);
@@ -71,7 +71,7 @@ const SearchForm = () => {
 						placeholder="Search"
 					/>
 				</div>
-				<div className="col-4">
+				<div className="col-sm-4 col-12">
 					<button className="btn btn-primary col-12" type="submit">
 						Search
 					</button>

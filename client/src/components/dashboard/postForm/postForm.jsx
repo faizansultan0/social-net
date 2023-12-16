@@ -18,7 +18,6 @@ const PostForm = ({
       <div className="card">
         <div className="card-body">
           <Form.Group
-            className="mb-3 pb-3"
             controlId="exampleForm.ControlTextarea1"
           >
             <ReactQuill

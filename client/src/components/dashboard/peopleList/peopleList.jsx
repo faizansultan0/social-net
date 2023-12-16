@@ -24,7 +24,7 @@ const PeopleList = ({ people, handleFollow, handleUnfollow }) => {
 						)}
 						<div className="info-div d-flex align-items-center">
 							<Card.Title className="h6 m-0">
-								<Link className="text-dark text-decoration-none" to={`/user/${user.username}`}>{user.name}</Link>
+								<Link className="text-dark text-decoration-none people-name" to={`/user/${user.username}`}>{user.name}</Link>
 							</Card.Title>
 						</div>
 					</div>

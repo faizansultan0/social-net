@@ -25,14 +25,12 @@ const UserRoute = ({ children }) => {
 		if (state && state.token) {
 			getCurrentUser();
 		}
-	}, [state, state.token, navigate]);
+	}, [state, navigate]);
 
-	useEffect(() => {
-		state === null &&
-			setTimeout(() => {
-				navigate("/login");
-			}, 1000);
-	}, []);
+	state === null &&
+		setTimeout(() => {
+			navigate("/login");
+		}, 1000);
 
 	return ok ? (
 		<>{children}</>

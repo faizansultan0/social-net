@@ -37,7 +37,7 @@ const NavBar = () => {
                 to="/"
                 style={{ textShadow: "1px 1px 2px grey" }}
               >
-                SN
+                SocialNet
               </NavLink>
             </Nav.Item>
 

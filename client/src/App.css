@@ -20,3 +20,10 @@
     max-width: 120%;
     max-height: 140%;
 }
+
+@media screen and (max-width: 576px)  {
+    .sm-round-parent {
+        width: 34px;
+        height: 34px;
+    }
+}

@@ -1,10 +1,9 @@
 // import { Card, Button } from "react-bootstrap";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { UserOutlined } from "@ant-design/icons";
 import { Card, Avatar } from "antd";
 import { useParams } from "react-router-dom";
-import { UserContext } from "../../context";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +12,6 @@ import axios from "axios";
 import moment from "moment";
 
 const PublicProfile = () => {
-	const [state, setState] = useContext(UserContext);
 	const [user, setUser] = useState({});
 	const [loading, setLoading] = useState(false);
 

@@ -1,21 +1,27 @@
 .people-list .people-card {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
 }
 
 .people-list .people-card .left-part {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+@media screen and (max-width: 576px) {
+	.people-list .people-name {
+        font-size: 14px;
+    }
 }
 
 .people-list .people-card .right-part {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .people-list .people-card:last-of-type {
-    margin-bottom: 0!important;
+	margin-bottom: 0 !important;
 }

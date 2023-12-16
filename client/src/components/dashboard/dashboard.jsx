@@ -13,13 +13,14 @@ import PostForm from "./postForm/postForm";
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context";
+import { Placeholder } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Pagination } from "antd";
 import axios from "axios";
 import PostList from "./postList/postList";
 import PeopleList from "./peopleList/peopleList";
 import SearchForm from "./searchForm/searchForm";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 import "./dashboard.css";
 
 const Dashboard = () => {
@@ -51,24 +52,27 @@ const Dashboard = () => {
 	useEffect(() => {
 		try {
 			if (state && state.token) {
-				axios.get("total-posts").then(({ data }) => { setTotalPosts(data-3);  console.log('Total posts: ', data)});
+				axios.get("total-posts").then(({ data }) => {
+					setTotalPosts(data - 3);
+					console.log("Total posts: ", data);
+				});
 			}
 		} catch (err) {
 			console.log(err);
 		}
-	}, [state, state.token]);
+	}, [state]);
 
 	useEffect(() => {
 		if (state && state.token) {
 			findPeople();
 		}
-	}, [state, state.token]);
+	}, [state]);
 
 	useEffect(() => {
 		if (state && state.token) {
 			newsFeed();
 		}
-	}, [state, state.token, page]);
+	}, [state, page]);
 
 	const newsFeed = async () => {
 		try {
@@ -100,7 +104,7 @@ const Dashboard = () => {
 				toast.success("Post Created Successfully!");
 				setContent("");
 				setImage({});
-				setTotalPosts(totalPosts+1)
+				setTotalPosts(totalPosts + 1);
 			}
 		} catch (err) {
 			console.log(err);
@@ -240,11 +244,11 @@ const Dashboard = () => {
 				<meta name="description" content="User Dashboard" />
 			</Helmet>
 			<Container fluid>
-				<div className="py-4">
-					<h1 className="text-center">Newsfeed</h1>
+				<div className="py-lg-4 py-2">
+					<h1 className="text-center mb-0">Dashboard</h1>
 				</div>
 
-				<Row className="py-3">
+				<Row>
 					<Col md={8}>
 						<PostForm
 							content={content}
@@ -255,7 +259,7 @@ const Dashboard = () => {
 							image={image}
 						/>
 
-						{/* {postsLoading ? (
+						{postsLoading ? (
 							// <div className="d-flex justify-content-center align-items-center">
 							//   <Spinner />
 							// </div>
@@ -268,39 +272,47 @@ const Dashboard = () => {
 								<Placeholder style={{ width: "25%" }} />
 								<Placeholder xs={6} />
 							</>
-						) : ( */}
-						<PostList
-							posts={posts}
-							state={state}
-							handleDelete={handleDelete}
-							handleLike={handleLike}
-							handleUnlike={handleUnlike}
-							handleComment={handleComment}
-							removeComment={removeComment}
-						/>
-						<div className="d-flex justify-content-center mb-lg-0 mb-2">
-							<Pagination
-								current={page}
-								total={totalPosts}
-								defaultPageSize={3}
-								pageSize={3}
-								onChange={(value) => { setPage(value); window.scrollTo({top: 0})}}
-							/>
-						</div>
-						{/* )} */}
+						) : (
+							<>
+								<PostList
+									posts={posts}
+									state={state}
+									handleDelete={handleDelete}
+									handleLike={handleLike}
+									handleUnlike={handleUnlike}
+									handleComment={handleComment}
+									removeComment={removeComment}
+								/>
+								<div className="d-flex justify-content-center mb-lg-0 mb-2">
+									<Pagination
+										current={page}
+										total={totalPosts}
+										defaultPageSize={3}
+										pageSize={3}
+										onChange={(value) => {
+											setPage(value);
+											window.scrollTo({ top: 0 });
+										}}
+									/>
+								</div>
+							</>
+						)}
 					</Col>
 					<Col md={4}>
 						<Card className="p-2 min-h-450">
 							<SearchForm />
-							{state.user && state.user && state.user.following && (
-								<Link
-									to={`/user/following`}
-									className="link-underline link-underline-opacity-0 mb-3"
-								>{`${state.user.following.length} Following`}</Link>
-							)}
+							{state &&
+								state.user &&
+								state.user &&
+								state.user.following && (
+									<Link
+										to={`/user/following`}
+										className="link-underline link-underline-opacity-0 mb-3"
+									>{`${state.user.following.length} Following`}</Link>
+								)}
 							<h2 className="h5">About</h2>
 							<p className="text-small">
-								{state.user.about ? (
+								{state && state.user && state.user.about ? (
 									state.user.about
 								) : (
 									<span className="text-muted">
@@ -309,12 +321,14 @@ const Dashboard = () => {
 								)}
 							</p>
 							<h2 className="h5">Username</h2>
-							<a
-								href="/user/dashboard#"
-								className="text-small d-block mb-3"
-							>
-								{state.user.username}
-							</a>
+							{state && state.user && (
+								<Link
+									to={`/user/${state.user.username}`}
+									className="text-small d-block mb-3"
+								>
+									{state.user.username}
+								</Link>
+							)}
 							<h2 className="h5">Find People</h2>
 							{peopleLoading ? (
 								<div className="d-flex justify-content-center align-items-center min-h-200">
