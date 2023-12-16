@@ -244,9 +244,9 @@ const Dashboard = () => {
 				<meta name="description" content="User Dashboard" />
 			</Helmet>
 			<Container fluid>
-				<div className="py-lg-4 py-2">
+				{/* <div className="py-lg-4 py-2">
 					<h1 className="text-center mb-0">Dashboard</h1>
-				</div>
+				</div> */}
 
 				<Row>
 					<Col md={8}>
