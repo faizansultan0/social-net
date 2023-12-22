@@ -3,8 +3,6 @@ import { UserContext } from "../../context";
 import { useNavigate } from "react-router-dom";
 import {
 	Container,
-	Row,
-	Col,
 	Form,
 	Modal,
 	Button,

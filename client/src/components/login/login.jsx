@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../../context";
-import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
+import { Container, Form, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -78,65 +78,58 @@ const Login = () => {
 					<div className="card px-3 p-4">
 						<h1 className="text-center h2">Login</h1>
 
-								<Form onSubmit={submitHandler} className="px-4">
-									<Form.Group className="mb-3">
-										<Form.Label className="text-muted">
-											Email address
-										</Form.Label>
-										<Form.Control
-											value={email}
-											onChange={(e) => setEmail(e.target.value)}
-											type="email"
-											placeholder="Enter email"
-										/>
-										<Form.Text className="text-muted">
-											We'll never share your email with anyone else.
-										</Form.Text>
-									</Form.Group>
+						<Form onSubmit={submitHandler} className="px-4">
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">
+									Email address
+								</Form.Label>
+								<Form.Control
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									type="email"
+									placeholder="Enter email"
+								/>
+								<Form.Text className="text-muted">
+									We'll never share your email with anyone else.
+								</Form.Text>
+							</Form.Group>
 
-									<Form.Group className="mb-3">
-										<Form.Label className="text-muted">
-											Password
-										</Form.Label>
-										<Form.Control
-											value={password}
-											onChange={(e) => setPassword(e.target.value)}
-											type="password"
-											placeholder="Password"
-										/>
-									</Form.Group>
-									<button
-										disabled={!email || !password || loading}
-										className="btn btn-primary w-100 mb-3"
-									>
-										{loading ? (
-											<Spinner
-												animation="border"
-												role="status"
-												size="sm"
-											>
-												<span className="visually-hidden">
-													Loading...
-												</span>
-											</Spinner>
-										) : (
-											"Login"
-										)}
-									</button>
+							<Form.Group className="mb-3">
+								<Form.Label className="text-muted">Password</Form.Label>
+								<Form.Control
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									type="password"
+									placeholder="Password"
+								/>
+							</Form.Group>
+							<button
+								disabled={!email || !password || loading}
+								className="btn btn-primary w-100 mb-3"
+							>
+								{loading ? (
+									<Spinner animation="border" role="status" size="sm">
+										<span className="visually-hidden">
+											Loading...
+										</span>
+									</Spinner>
+								) : (
+									"Login"
+								)}
+							</button>
 
-									<p className="para text-center">
-										Not Registered?{" "}
-										<Link to="/register">Register</Link>
-									</p>
-									<div className="para text-center">
-										<Link
-											to="/forgot-password"
-											className="text-danger text-decoration-none"
-										>
-											Forgot Password
-										</Link>
-									</div>
-								</Form>
+							<p className="para text-center">
+								Not Registered? <Link to="/register">Register</Link>
+							</p>
+							<div className="para text-center">
+								<Link
+									to="/forgot-password"
+									className="text-danger text-decoration-none"
+								>
+									Forgot Password
+								</Link>
+							</div>
+						</Form>
 					</div>
 				</div>
 			</Container>
