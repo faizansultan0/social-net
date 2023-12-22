@@ -76,7 +76,7 @@ const Dashboard = () => {
 
 	const newsFeed = async () => {
 		try {
-			setPostsLoading(true);
+			// setPostsLoading(true);
 			const { data } = await axios.get(`/news-feed/${page}`);
 			// console.log('User Posts => ', data);
 			setPosts(data);
@@ -84,7 +84,7 @@ const Dashboard = () => {
 			// console.log("Posts: ", posts);
 		} catch (err) {
 			console.log(err);
-			setPostsLoading(false);
+			// setPostsLoading(false);
 		}
 	};
 
@@ -259,44 +259,27 @@ const Dashboard = () => {
 							image={image}
 						/>
 
-						{postsLoading ? (
-							// <div className="d-flex justify-content-center align-items-center">
-							//   <Spinner />
-							// </div>
-							<>
-								<Placeholder xs={6} />
-								<Placeholder className="w-75" />{" "}
-								<Placeholder style={{ width: "25%" }} />
-								<Placeholder xs={6} />
-								<Placeholder className="w-75" />{" "}
-								<Placeholder style={{ width: "25%" }} />
-								<Placeholder xs={6} />
-							</>
-						) : (
-							<>
-								<PostList
-									posts={posts}
-									state={state}
-									handleDelete={handleDelete}
-									handleLike={handleLike}
-									handleUnlike={handleUnlike}
-									handleComment={handleComment}
-									removeComment={removeComment}
-								/>
-								<div className="d-flex justify-content-center pb-3">
-									<Pagination
-										current={page}
-										total={totalPosts}
-										defaultPageSize={3}
-										pageSize={3}
-										onChange={(value) => {
-											setPage(value);
-											window.scrollTo({ top: 0 });
-										}}
-									/>
-								</div>
-							</>
-						)}
+						<PostList
+							posts={posts}
+							state={state}
+							handleDelete={handleDelete}
+							handleLike={handleLike}
+							handleUnlike={handleUnlike}
+							handleComment={handleComment}
+							removeComment={removeComment}
+						/>
+						<div className="d-flex justify-content-center pb-3">
+							<Pagination
+								current={page}
+								total={totalPosts}
+								defaultPageSize={3}
+								pageSize={3}
+								onChange={(value) => {
+									setPage(value);
+									window.scrollTo({ top: 0 });
+								}}
+							/>
+						</div>
 					</Col>
 					<Col md={4}>
 						<Card className="p-2 min-h-450">
