@@ -13,7 +13,6 @@ import PostForm from "./postForm/postForm";
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context";
-import { Placeholder } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Pagination } from "antd";
 import axios from "axios";

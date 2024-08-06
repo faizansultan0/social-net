@@ -22,7 +22,7 @@ const PageRoutes = () => {
 			<Route path="/user/following" element={<Following />} />
 			<Route path={`/post/:_id`} element={<PostComments />} />
 			<Route path='/user/:username' element={<PublicProfile />} />
-			<Route path="*" element={<PageNotFound />} />
+			<Route path="/*" element={<PageNotFound />} />
 		</Routes>
 	);
 };
