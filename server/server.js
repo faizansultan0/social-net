@@ -19,5 +19,8 @@ app.use(morgan('dev'));
 
 // Auto Load Routes
 readdirSync('./routes').map(r => app.use('/api', require(`./routes/${r}`)))
+app.get("/", (req, res) => {
+	res.send("OK");
+});
 
 app.listen(PORT,() => console.log(`Listening at PORT ${PORT}`))

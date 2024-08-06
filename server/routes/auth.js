@@ -35,8 +35,5 @@ router.get('/user-following', requireSignIn, userFollowing)
 
 router.get('/search-user/:query', searchUser);
 router.get('/user/:username', getUser)
-router.get('/', (req, res) => {
-	res.send('OK');
-})
 
 module.exports = router;
